@@ -4,7 +4,7 @@ import { addMinuteLabel } from './gmt-display.js';
 import { weekStart } from './settings-data.js';
 
 const AlarmSettings = (props) => {
-	console.log(props)
+	/* ----TEST FOR GIT----- */
 	return (
 		<li>
 			<h3>
