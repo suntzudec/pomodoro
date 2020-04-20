@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Range = (props) => {       
+const Range = (props) => {       /* TEST for github directory master */
 	return (
 		<div id="carousel-cont" className="range">
 			<div id="value-col">
