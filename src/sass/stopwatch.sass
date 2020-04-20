@@ -1,0 +1,173 @@
+body
+	#stopwatch-container
+		overflow: hidden
+		background: #010125
+		height: 100vh
+		
+		.opacity
+			opacity: 0.85
+		
+		#sw-svg
+			display: block
+			margin: -7.5% auto
+			z-index: 3
+			transform: scale(0.8)
+			
+			#sw-circ
+				fill: transparent
+				stroke: #ffffff
+				stroke-width: 3
+				
+			text 
+				font-size: 60px
+		
+		#redo-div
+			width: 80%
+			margin: 0 auto
+			
+			h3
+				position: relative
+				margin-top: 2vh
+				
+			.fa-redo
+				float: right
+				font-size: 7vw
+				transition: 0.4s
+				
+				&:active
+					top: 6px
+					
+			#tracksvg-svg
+				float: right
+				position: relative
+				z-index: 6
+				top: -5px
+				left: 10px
+				
+				
+				&:active
+					position: relative
+					top: 6px		
+					
+			.fa-play, .fa-pause
+				float: left
+				font-size: 6vw
+				transition: 0.4s
+				
+				&:active
+					top: 6px
+							
+			#SW-ol
+				width: fit-content
+				font-size: 4vw
+				margin: 1% auto
+				position: absolute
+				height: 25%
+				text-align: center
+				left: 0
+				right: 0
+				overflow-x: hidden
+				
+				
+				ol
+					overflow-y: auto
+					margin: 0 auto
+					padding-bottom: 70px
+					padding-left: 7vw
+					box-sizing: border-box
+					position: relative
+					right: 1vw
+					scroll-behavior: smooth
+					
+					li
+						text-align: left
+						list-style: decimal
+						margin-bottom: 3vh
+						padding-left: 10px
+					
+						& > span:first-child
+							margin: 0 4vw 0 0
+						
+							
+::-webkit-scrollbar
+	width: 0
+	height: 0
+
+
+@media (max-device-width: 450px) 
+	body
+		#stopwatch-container
+			#sw-svg
+				transform: scale(0.85)
+				margin: -7.5vw auto
+				
+			#redo-div
+				.fa-play, .fa-pause, .fa-redo
+					font-size: 31px
+					
+				#SW-ol
+					
+					top: 65%
+				#tracksvg-svg
+					transform: scale(0.8)
+					
+					
+@media (max-device-width: 375px)
+	body
+		#stopwatch-container
+			#redo-div
+				#SW-ol
+					height: 200px
+					max-height: 30vh
+					width: 55%
+					bottom: 0
+					margin-bottom: 7.5%
+				
+					ol
+						padding-left: 12%
+						padding-bottom: 7.5%
+						width: fit-content
+						
+						li
+							margin-bottom: 15px
+							font-size: 4vw	
+					
+@media (orientation: landscape)
+	body
+		#stopwatch-container
+			#sw-svg
+				margin-top: -34%
+				transform: scale(0.3)
+			
+			#redo-div
+				margin-top: -34%
+				transform: scale(0.6)
+			
+			#redo-div
+				#SW-ol
+					height: 275px
+					margin-top: 0
+					width: 65%
+					
+					ol
+						padding-left: 9.9%
+						font-size: 3.5vw
+						width: fit-content
+						
+						li
+							margin-bottom: 2vw
+							padding-left: 7.5px
+				
+				
+@media (min-device-width: 2000px)							
+	body
+		#stopwatch-container
+			#sw-svg
+				margin-top: 0 
+			
+			#redo-div
+				margin-top: 0				
+				
+				#SW-ol
+					height: 300px
+					width: 450px				

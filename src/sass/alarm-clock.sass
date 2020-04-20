@@ -1,0 +1,818 @@
+@font-face
+	font-family: 'Orbitron'
+	src: url('../assets/fonts/Orbitron-Regular.woff') format('woff')
+	src: url('../assets/fonts/Orbitron-Regular.ttf') format('truetype')
+	src: url('../assets/fonts/Orbitron-Regular.woff2') format('woff2')
+	font-display: swap
+
+body
+	#alarm-clock-container
+		background: #010125
+		height: 100vh
+		overflow: hidden
+		
+		.box-shadow
+			box-shadow: 0.5px 1.4px 1.75px 0.8px #111
+			-webkit-box-shadow: 0.5px 1.4px 1.75px 0.8px #111
+			-moz-box-shadow: 0.5px 1.4px 1.75px 0.8px #111
+			-o-box-shadow: 0.5px 1.4px 1.75px 0.8px #111
+			-ms-box-shadow: 0.5px 1.4px 1.75px 0.8px #111
+			
+		#new-alarm
+			color: #fff
+			border: none
+			font-weight: 900 
+			font-size: 15vw
+			background: transparent 
+			filter: brightness(120%)  
+			width: 15%
+			height: 15%
+			position: absolute
+			margin: 80vh auto
+			left: 0
+			right: 0
+			top: 0
+			border-radius: 5%
+			line-height: 1.25
+			opacity: 0.7
+			outline: none
+			z-index: 1
+			text-shadow: 1.25px 1.3px 1.75px #000000
+			-webkit-text-stroke: 3.5px rgba(102, 102, 102, 0.65)
+			
+			&:hover
+				filter: brightness(140%) 
+				opacity: 1
+				
+			&:active
+				filter: brightness(180%) 
+				margin-top: calc(80vh + 5px)	
+			
+		#set-alarm-container
+			margin: 8.5% auto
+			position: absolute
+			left: 0
+			right: 0
+			top: 0
+			background: #010125
+			height: 100%
+			width: 100%
+			z-index: 1
+			
+			#circle
+				display: block
+				margin: 0 auto
+				filter: brightness(110%)
+				
+				text
+					fill: #fff
+					-webkit-user-select: none
+					-moz-user-select: none     
+					-ms-user-select: none      
+					user-select: none
+					
+				#ex
+					fill: #ffffff
+					font-size: 2.85em
+					z-index: 6
+					text-shadow: 1.1px 2.2px 4.6px #000000
+				
+				#right, #left
+					font-size: 80px 
+					stroke: #000000
+					stroke-width: 2.5
+					fill: #ffffff
+					text-shadow: 0.5px 0.8px 1.2px #cccccc
+					font-weight: 800
+					opacity: 0.9
+				
+				#right:hover, #left:hover
+					cursor: pointer
+				
+				#right:active, #left:active
+					fill: #000000
+					transition: 0.15s
+					stroke: #ffffff
+					
+				#alarm-time, #alarm-time-min, #colon
+					font-size: 85px
+					cursor: pointer	
+				
+				#am, #pm
+					font-size: 50px 
+					cursor: pointer
+				
+				.red
+					fill: red
+					stroke: red
+					
+				#select-circ 
+					opacity: 0.5
+					fill: #222222
+					
+					&:hover
+						cursor: pointer
+						
+				#clock-line
+					stroke-width: 3
+					stroke: #ffffff
+					
+				circle
+					stroke: #ffffff
+					stroke-width: 4
+					fill: #111
+					
+				.clock-n
+					font-size: 28.5px
+					text-shadow: 0.52px 1.3px 1.8px #333333
+					font-weight: 900
+					
+		#alarm-ul
+			list-style: none
+			padding: 0
+			margin: 0
+			position: absolute
+			display: block
+			width: 100%
+			height: 92%
+			overflow-y: auto
+			scroll-behavior: smooth
+			filter: brightness(110%)
+			
+			li.alarm
+				padding: 0.6em 1.1em 1em
+				height: 33vw
+				border-bottom: 0.5px outset #ffffff
+			
+				.opacity
+					opacity: 0.85
+			
+			li.fold
+				height: auto
+				
+			li.alarm	
+				#ringtone-cont
+					background: #1e1e4df5
+					width: 80%
+					border: 1px outset #fff
+					margin: 0 auto
+					padding: 2%		
+					position: absolute
+					top: 1.5%
+					right: 0
+					left: 0
+					box-shadow: 0.25px 0.7px 2px 0.8px #111				
+					z-index: 9999
+					
+					button
+						padding: 2.25%
+						font-size: 3.5vw
+						border: 2px solid #fff
+						color: #fff
+						font-weight: 900
+						
+						float: right
+						position: relative
+						background: #222
+						border-radius: 4%
+						
+						&:active
+							top: 7.5px	
+					
+					#ringtone-x
+						display: inline-block
+						float: right
+						font-size: 3.5vw
+						padding: 0 1% 1%
+						position: relative
+						right: -2%
+						top: -0.5em
+						font-family: 'Orbitron'
+						
+						&:active
+							top: -0.25em
+					
+					ul
+						list-style: none
+						padding-left: 0
+						font-size: 3vw
+						overflow-y: auto
+						filter: brightness(1.2)
+						padding: 3.5%
+						
+						li
+							padding: 1%
+							color: inherit
+							
+							input
+								width: 1.75vw
+								min-width: 1em
+								height: 1.75vw	
+								min-height: 1em	
+								
+							label
+								position: relative
+								left: 2.5%
+								color: inherit
+								
+				.repeat-days-div
+					background: #1e1e4df5
+					width: 80%
+					border: 1px outset #fff
+					margin: 0 auto
+					padding: 1.5%		
+					position: absolute
+					top: 1.5%
+					right: 0
+					left: 0
+					box-shadow: 0.25px 0.7px 2px 0.8px #111				
+					z-index: 9999
+					
+					.repeat-days-ul
+						width: 100%
+						list-style: none
+						font-size: 3vw
+						overflow-y: auto
+						filter: brightness(1.2)
+						padding: 3.5%
+						
+						li
+							padding: 1%
+							
+						input
+							position: relative
+							right: 2%
+							width: 1.75vw
+							min-width: 1em
+							height: 1.75vw	
+							min-height: 1em	
+						
+					button
+						padding: 2.25%
+						font-size: 3.5vw
+						border: 2px solid #fff
+						color: #fff
+						font-weight: 900
+						
+						text-align: center
+						float: right
+						position: relative
+						right: 5px
+						background: #222
+						border-radius: 4%
+						
+						&:active
+							top: 7.5px	
+							
+				div
+					.on-off
+						text-align: center
+						float: right
+						margin: 0 0 0 3%
+						grid-column: 2
+						grid-row: 1
+						
+						label
+							position: relative
+							right: 6.5%
+							font-size: 4.75vw
+							margin-left: 3.5px
+							
+						input
+							position: relative
+							right: 7.5%
+							width: 2.75vw
+							height: 2.75vw	
+							margin-top: 0
+				 
+				.alarm-li-cont
+					display: grid
+					grid-template-columns: 50% 50%
+					grid-template-rows: 70% 30%
+					height: 60%
+					position: relative
+					
+					h1
+						grid-row: 1
+						grid-column: 1
+						font-size: 7vw
+						margin: 4%
+						
+						&:active
+							color: red
+						
+					.day-or-delete
+						grid-row: 2
+						grid-column: 1
+						font-size: 3.5vw
+						margin: auto 5%	
+						line-height: 2.2
+						white-space: nowrap
+						
+					.dismiss
+						animation: dismiss-animation 1.5s steps(5, start) infinite
+						-webkit-animation: dismiss-animation 1.5s steps(5, start) infinite
+					
+					@keyframes dismiss-animation 
+						0% 
+							opacity: 1
+						10%
+							opacity: 0.9
+						20%
+							opacity: 0.8
+						30%
+							opacity: 0.7
+						40%
+							opacity: 0.6
+						50%
+							opacity: 0.5
+						60%
+							opacity: 0.4
+						70%
+							opacity: 0.3
+						80%
+							opacity: 0.2
+						90%
+							opacity: 0.1
+						100%
+							opacity: 0
+							
+					@-webkit-keyframes dismiss-animation
+						0% 
+							opacity: 1
+						10%
+							opacity: 0.9
+						20%
+							opacity: 0.8
+						30%
+							opacity: 0.7
+						40%
+							opacity: 0.6
+						50%
+							opacity: 0.5
+						60%
+							opacity: 0.4
+						70%
+							opacity: 0.3
+						80%
+							opacity: 0.2
+						90%
+							opacity: 0.1
+						100%
+							opacity: 0
+						
+					.expand	
+						grid-row: 2	
+						grid-column: 2
+						display: block	
+						padding: 0 10%
+						text-align: left
+						margin: 0 0% 0 70%
+						line-height: 2
+						font-family: 'Orbitron'
+						font-size: 4.65vw 
+						font-weight: 500
+						
+						&:active
+							position: relative
+							top: 5px
+							
+						&:hover
+							cursor: pointer	
+							
+				.expanded-grid
+					display: grid
+					grid-template-columns: 50% 50%
+					grid-template-rows: 22% 60% 23%
+					height: 100%
+					transition: 0.4s
+					
+					div
+						min-height: 27px
+						
+					h1
+						grid-row: 1
+						grid-column: 1
+						font-size: 7vw
+						margin: 1% 4% 4%
+						
+						
+						&:active
+							color: red
+						
+					.collapsing
+						width: 200%
+						grid-row: 2
+						grid-column: 1 / 2 
+						display: grid
+						grid-template-columns: 50% 50%
+						grid-template-rows: 30.3% 30.3% 39.3%
+						
+						.repeat
+							grid-row: 1
+							grid-column: 1 / 2
+							margin: 2% 5% 5%
+							line-height: 1.95
+							
+							label
+								font-size: 3.25vw
+								margin-left: 1vw
+								
+								&:active
+									color: red
+							
+							input
+								width: 1.85vw
+								min-width: 1.25em
+								height: 1.85vw	
+								min-height: 1.25em
+						
+						.vibrate
+							grid-row: 2
+							grid-column: 1 / 2
+							margin: 2% 5% 5%
+							position: relative
+							left: 0.25%	
+							text-align: left	
+							line-height: 1.75	
+							
+							label
+								font-size: 3.25vw
+								margin-left: 1vw
+							
+							input
+								width: 1.85vw
+								min-width: 1.25em
+								height: 1.85vw	
+								min-height: 1.25em	
+							
+						.ringtone
+							grid-row: 2
+							grid-column: 2
+							margin: 2% 5% 5%	
+							line-height: 1.75
+							
+							span
+								font-size: 4vw
+								
+								&:active
+									color: cyan
+									filter: brightness(200%)
+									position: relative
+									top: 5px
+							
+							label
+								font-size: 3.75vw
+								margin-left: 15px	
+							
+						.label
+							grid-row: 3
+							grid-column: 1/2
+							margin: 0.5% 5%
+							padding: 1%						
+							
+							label
+								font-size: 3.5vw
+							
+							input
+								height: 50%
+								width: 70%
+								background: transparent
+								outline: none
+								font-size: 3vw
+								border-left: 0
+								border-right: 0
+								border-top: 0
+								border-bottom: 3px solid
+								padding: 5px
+								margin: 0 auto
+								
+					.collapse-div
+						grid-row: 3
+						grid-column: 1
+						font-size: 2.7vw
+						margin: 6.75% 6% 0 
+						line-height: 1.1
+						
+						span.fa-trash
+							line-height: 1.8
+						
+						span:active
+							position: relative
+							top: 5px
+					
+						.dismiss
+							animation: dismiss-animation 1.5s steps(5, start) infinite
+							-webkit-animation: dismiss-animation 1.5s steps(5, start) infinite
+						
+						@keyframes dismiss-animation 
+							0% 
+								opacity: 1
+							10%
+								opacity: 0.9
+							20%
+								opacity: 0.8
+							30%
+								opacity: 0.7
+							40%
+								opacity: 0.6
+							50%
+								opacity: 0.5
+							60%
+								opacity: 0.4
+							70%
+								opacity: 0.3
+							80%
+								opacity: 0.2
+							90%
+								opacity: 0.1
+							100%
+								opacity: 0
+								
+						@-webkit-keyframes dismiss-animation
+							0% 
+								opacity: 1
+							10%
+								opacity: 0.9
+							20%
+								opacity: 0.8
+							30%
+								opacity: 0.7
+							40%
+								opacity: 0.6
+							50%
+								opacity: 0.5
+							60%
+								opacity: 0.4
+							70%
+								opacity: 0.3
+							80%
+								opacity: 0.2
+							90%
+								opacity: 0.1
+							100%
+								opacity: 0
+					
+					.click
+						grid-row: 3
+						grid-column: 2	
+						font-size: 7vw
+						display: block	
+						padding: 0 10%
+						text-align: left
+						margin: 0 0% 0 70%
+						line-height: 2
+						
+						&:active
+							position: relative
+							top: 5px
+							
+						.expand:hover
+							cursor: pointer
+							
+@media (max-device-width: 499px) 
+	body
+		#alarm-clock-container
+			#set-alarm-container
+				width: 100%
+				height: 100vh
+				margin: 13.5% auto 
+				
+			#new-alarm
+				font-size: 5em
+				
+			#alarm-ul
+				list-style: none
+				padding: 0
+				margin: 0
+				position: absolute
+				display: block
+				width: 100%
+				height: 92%
+				overflow-y: auto
+				scroll-behavior: smooth
+				
+				li.alarm
+					height: 55vw
+					min-height: 95px
+					padding: 0.6em 1em 1.2em
+					
+					#ringtone-cont
+						width: 95%
+						max-width: 425px
+						
+						#ringtone-x
+							font-size: 4.5vw
+						
+						ul
+							font-size: 5.5vw
+							padding: 3.5%
+							
+							li
+								padding: 2.5%
+								
+								input
+									right: 3%
+									width: 4.5vw
+									height: 4.5vw
+						
+						button
+							font-size: 5vw
+							padding: 3%
+					
+					.repeat-days-div
+						width: 93.5%
+						max-width: 425px
+						
+						.repeat-days-ul
+							font-size: 5.5vw
+							padding: 3.5%
+						
+							li
+								padding: 2.5%
+								
+								input
+									right: 3%
+									width: 4.5vw
+									height: 4.5vw	
+							
+						button
+							font-size: 5vw
+							padding: 3%
+					
+					div
+						.heading
+							h1
+								font-size: 11vw
+								margin-top: 0
+								white-space: nowrap
+								
+						.on-off
+							label
+								font-size: 6vw
+								margin-left: 2px
+							
+							input
+								min-width: 1.25em
+								min-height: 1.25em
+								width: 2vw
+								height: 2vw
+								top: 2px
+								
+						.collapse		
+								
+					.expanded-grid
+						
+						.collapsing
+							
+							.label
+								label
+									font-size: 150%
+							
+							.vibrate
+								margin-top: 2%
+								
+								label
+									font-size: 150%
+									position: relative
+									
+								input	
+									width: 2.15vw
+									height: 2.15vw
+									
+							.repeat
+								margin-top: 3%
+								margin-bottom: 2%
+								
+								label
+									font-size: 150%
+									position: relative	
+									
+								input	
+									width: 2.15vw
+									height: 2.15vw
+									
+							.ringtone
+								label
+									font-size: 150%
+										
+								span
+									font-size: 4.5vw
+									
+						.collapse-div
+							span.fa-trash
+								font-size: 4.5vw
+								line-height: 2.8								
+						
+						.click
+							
+							.expand
+								font-size: 11vw
+					
+					.collapse-div
+						line-height: 2.25	
+						
+						.day-or-delete
+							font-size: 5vw
+						
+					.click
+						
+						.expand
+							line-height: 2.15	
+							font-size: 6vw
+				
+				li.fold	
+					height: auto
+					
+@media (max-device-width: 379px) 				
+	body
+		#alarm-clock-container
+			#set-alarm-container
+				margin: 15% auto
+		
+			#new-alarm
+				font-size: 5em	
+			
+			#alarm-ul
+				li.alarm
+					height: 60vw
+					padding: 0.6em 1em 1.2em
+					
+					div
+						.on-off
+							label
+								font-size: 6.5vw
+								margin-left: 14.5vw
+								
+							input
+								top: 3px
+								left: 11vw
+						
+						.heading
+							h1
+								font-size: 11.5vw
+								
+					.expanded-grid
+						.collapsing
+							.repeat, .vibrate, .ringtone
+								line-height: 1
+								
+								label
+									font-size: 20px
+									
+								input
+									width: 1.9vw
+									height: 1.9vw
+							
+							.label
+								label
+									font-size: 20px
+								
+								input
+									font-size: 15px
+									width: 90%
+									
+							.ringtone
+								label
+									margin-left: 8px
+									
+								span
+									font-size: 5.25vw
+						
+				li.fold
+					height: auto
+					padding: 0.6em 1.2em 0.6em
+					
+@media (orientation: landscape)
+	body
+		#alarm-clock-container
+			#set-alarm-container
+				transform: scale(0.4)
+				margin: -15vh auto
+				height: 90%
+				
+			#alarm-ul
+				transform: scale(0.5)
+				margin: -45.5vh auto 0
+				height: 180vh
+				
+				li.alarm
+					.expanded-grid
+						.collapsing
+							.repeat, .vibrate
+								input
+									width: 2.5vw
+									height: 2.5vw
+						
+						.collapse-div
+							margin: 3.25% 6% 0
+							
+						.click
+							line-height: 1.5
+			
+			#new-alarm
+				margin-top: 81vh
+				font-size: 9vw
+				
+				&:active
+					margin-top: 82vh	

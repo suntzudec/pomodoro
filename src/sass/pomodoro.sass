@@ -1,0 +1,114 @@
+body	
+	#pomodoro-container
+		overflow: hidden
+		background: #010125
+		height: 100vh
+
+		.negative
+			position: relative
+			top: 7.1%
+			min-width: 17.36%
+			
+			.clickable
+				&:active
+					display: inline-block
+					position: relative
+					top: 3px
+					color: #ffffff
+					
+				&:hover
+					cursor: pointer
+		
+		#parameters
+			text-align: center
+			width: 48.6%
+			margin: 0 auto
+			z-index: 6
+			
+			label, span
+				font-size: 2.77vw
+				
+			#break-label
+				float: right
+				font-weight: 100
+			
+				
+			#session-label
+				float: left
+				font-weight: 100
+				
+			span
+				margin-left: 3%
+				margin-right: 3%
+				-webkit-user-select: none
+				-moz-user-select: none     
+				-ms-user-select: none      
+				user-select: none 
+				
+		#pomo-disp-container, #controls-cont
+			width: 17.36%
+			margin: 0 auto
+			top: 17.84%
+		
+		#pomo-disp-container
+			#display-container
+				div
+					h3
+						font-size: 2.9vw 
+						font-weight: 100
+						text-align: center  
+						color: inherit
+						
+					#timer-label
+						margin-bottom: 0
+						margin-top: 0
+						
+					#time-left
+						margin-top: 5%
+				
+				.low	
+					color: #ff0000 
+							
+		#controls-cont
+			left: 1.1%
+			top: 17.88%
+			
+			#controls
+				margin: 0 auto
+				text-align: center
+				
+				span
+					text-align: center
+					font-size:  2.77vw  
+					line-height: 1.5
+					margin: 0 4%
+
+@media (max-device-width: 500px)
+	body
+		#pomodoro-container
+			.negative
+				transform: scale(1.75)
+			
+			#parameters
+				top: 4.5%
+					
+			#pomo-disp-container
+				top: 14%
+			
+			#controls-cont
+				top: 18%	
+				
+@media (max-device-width: 750px) and (min-device-width: 501px)
+	body
+		#pomodoro-container
+			.negative
+				transform: scale(1.45)
+				
+			#pomo-disp-container
+				top: 16%
+			
+			#controls-cont
+				top: 20%				
+				
+	
+	
