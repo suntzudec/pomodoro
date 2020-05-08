@@ -12,10 +12,6 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 		if(value === null && ended){
 			const index = state['isRinging'];
 			state['alarm-list'][index]['snooze'] = null;
-			
-			/* alarmListIndexChanged({
-				"RINGING_ENDED": state['alarm-list'][index]
-			}); */
 		} 	
 		
 		state['isRinging'] = value;

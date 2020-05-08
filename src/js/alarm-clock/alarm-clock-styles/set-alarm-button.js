@@ -1,14 +1,15 @@
 const setAlarmButtonStyle = (setAlarm) => {
 	const landscape = window.screen.orientation.type.startsWith("landscape");
 	const { clientWidth } = document.body;
+	
 	if(setAlarm === true){
-		if(clientWidth/* window.screen.availWidth */ < 1000 && !landscape){
-			if(clientWidth/* window.screen.availWidth */ <= 379){
+		if(clientWidth < 1050 && !landscape){
+			if(clientWidth <= 379){
 				return {
 					fontSize: "16.5vw"
 				};
 			}
-			if(clientWidth/* window.screen.availWidth */ < 499){
+			if(clientWidth < 499){
 				return { 
 					fontSize: "14.5vw" 
 				};

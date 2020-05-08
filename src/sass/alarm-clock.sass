@@ -65,7 +65,7 @@ body
 				filter: brightness(110%)
 				
 				text
-					fill: #fff
+					fill: #ffffff
 					-webkit-user-select: none
 					-moz-user-select: none     
 					-ms-user-select: none      
@@ -820,3 +820,27 @@ body
 				
 				&:active
 					margin-top: 82vh	
+					
+@media (min-width: 500px) and (orientation: portrait)
+	body
+		#alarm-clock-container
+			#set-alarm-container
+				#circle
+					margin-top: 12.5px
+					
+			#alarm-ul
+				li.alarm
+					.expanded-grid
+						.collapsing
+							.repeat, .vibrate
+								input
+									width: 2.75vw
+									height: 2.75vw
+									
+								label
+									position: relative
+									top: -2px
+						
+						.collapse-div
+							span
+								line-height: 1

@@ -14,7 +14,7 @@ const alarmWorkerScript = function(){
 		const year = date.getFullYear();
 		const month = date.getMonth();
 		const day = date.getDate();
-		const base = listTime;
+		const base = listTime.slice(); //TEST
 		const corrected = processTimeArr(base);	
 		const dateObj = new Date(year, month, day, corrected[0], corrected[1]); 
 		let newStamp = dateObj.getTime();
@@ -264,7 +264,7 @@ const alarmWorkerScript = function(){
 				}
 				dayGap(prev, i);
 			}
-			dayGap(prev, 0);					//console.log(diff, "DIFF")				
+			dayGap(prev, 0);							
 			node.timestamp += (86400 * diff);
 		};
 		
@@ -275,7 +275,6 @@ const alarmWorkerScript = function(){
 				const max = Math.max.apply(null, nodeData['repeat-days']);
 				
 				if(value >= max || value < min){ 
-				console.log("min returned")
 					return min;
 				}
 				else {
@@ -308,7 +307,7 @@ const alarmWorkerScript = function(){
 			if(nodeData['repeat'] === true){ 
 				const stamp = this.setStampFromArguments(node.timestamp, millistamp);
 				const day = new Date(stamp).getDay(); 
-				const nextDay = calcDay(day);							//console.log(day, "DAY", nextDay)
+				const nextDay = calcDay(day);							
 				this.updateTimestamp([ day, nextDay ], node);
 			}
 			else {												
@@ -351,17 +350,17 @@ const alarmWorkerScript = function(){
 			const data = JSON.parse(node.data);
 			
 			if(this.buildTSForNoRepeat(node, data.repeat) && this.commonConditions(node.snooze, data.setRepeat)){ 
-								//console.log("TIMESTAMP BUILD")
-				node.timestamp = buildTimeStamp(data['time'].slice());
+				node.timestamp = buildTimeStamp(data['time']/*.slice()*/);
 			} 
 			
 			if(data.setRepeat === true){
 				setRepeat = true;
 			}
 			else if(this.buildTSForRepeat(setRepeat, data.repeat) && this.commonConditions(node.snooze, data.setRepeat)){
-				const initStamp = buildTimeStamp(data['time'].slice());				//console.log(initStamp, "HERE Check!!")
-				node.timestamp = initStamp;										//console.log(node, "NODE")
-				if(this.checkRepeatDaysForDay(data['repeat-days'], initStamp * 1000)){		//console.log("last if")
+				const initStamp = buildTimeStamp(data['time']/*.slice()*/);				
+				node.timestamp = initStamp;			
+				
+				if(this.checkRepeatDaysForDay(data['repeat-days'], initStamp * 1000)){		
 					this.generateNewTimestamp(node);
 				}
 				
@@ -402,7 +401,6 @@ const alarmWorkerScript = function(){
 	};
 	
 	const volumeLimitCheck = () => {
-		console.log(alarmSettingsObj['alarm-vol'], (ringLimit / alarmSettingsObj['increase-vol']) * 10)
 		return alarmSettingsObj['alarm-vol'] + ((ringLimit / alarmSettingsObj['increase-vol']) * 10);
 	};
 	
@@ -412,9 +410,10 @@ const alarmWorkerScript = function(){
 	
 	const setForIncrease = (alarmVol) => {
 		let ones = alarmVol.toString();
-		ones = +ones[ones.length-1]
+			ones = +ones[ones.length-1];
+			
 		return 100 + ones;
-	}
+	};
 	
 	const checkForceEnd = () => {
 		return alarmSettingsObj['silence'] !== "Never" && ringLimit >= alarmSettingsObj['silence'];
@@ -424,7 +423,8 @@ const alarmWorkerScript = function(){
 		ringLimit++;		
 		
 		if(alarmSettingsObj['increase-bool'] === true){
-			increaseVol++;				//console.log("ringingSettingsTasks")
+			increaseVol++;		
+			
 			if(checkVolumeIncrease()){
 				increaseVol = 0;		
 				
@@ -467,7 +467,7 @@ const alarmWorkerScript = function(){
 				const repeatStatus = nodeData.repeat === true && obj.repeat === false;
 				
 				if(repeatStatus && node.power === true){
-					node.timestamp = buildTimeStamp(obj['time'].slice());
+					node.timestamp = buildTimeStamp(obj['time']/*.slice()*/);
 				}
 				
 				node.data = JSON.stringify(obj);
@@ -480,7 +480,7 @@ const alarmWorkerScript = function(){
 			}
 			else {
 				listInstance.addNextPath(
-					buildTimeStamp(obj['time'].slice()), 
+					buildTimeStamp(obj['time']/*.slice()*/), 
 					obj
 				);
 			}
@@ -573,10 +573,12 @@ const alarmWorkerScript = function(){
 			function(){ 
 				stamp = Date.now();
 				
-				const matchNode = listInstance.traverseNextPathForStampValue(stamp / 1000);
-				const dismissNodes = listInstance.traverseNextPathForDismissArray(stamp / 1000); 
+				let secs = stamp / 1000;
 				
-				if(matchNode){						console.log(matchNode, "MATCHNODE, RINGING")
+				const matchNode = listInstance.traverseNextPathForStampValue(secs);
+				const dismissNodes = listInstance.traverseNextPathForDismissArray(secs); 
+				
+				if(matchNode){					
 					const isNull = currentRing === null;
 					simultaneousRinging(matchNode, isNull);
 				}

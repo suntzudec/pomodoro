@@ -46,7 +46,7 @@ if(typeofWorker === true){
 if(SWCondition === true){
 	initSW();
 } 
-		//TEST tablet portrait --- larger font size for navbar spans
+		
 const Routing = () => (
 	<React.StrictMode>
 		<Router>
