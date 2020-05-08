@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import RepeatDays from './repeat-days.jsx';
 import AlarmRingtoneSelect from './alarm-ringtone-select.jsx';
 import ringtoneArray from './ringtone-array.js';
 import { alarmDaysLabel } from  './alarm-helpers.js';
 
-export default class Alarm extends PureComponent {
+export default class Alarm extends React.PureComponent {
 	constructor(props){
 		super(props);
 		this.labelValue = "";
@@ -93,7 +93,7 @@ export default class Alarm extends PureComponent {
 						<h1 className="alarm-li-heading opacity" 
 							onMouseUp={ () => this.props.setAlarmEditState(this.props.i) }>  
 							{ 
-								`${ this.props.alarmObj['time'][0] }:${ this.props.alarmObj['time'][1].toString().length > 1 ?   this.props.alarmObj['time'][1] : "0" + this.props.alarmObj['time'][1] } ${ this.props.alarmObj['time'][2] }` 
+								`${ this.props.alarmObj['time'][0] }:${ this.props.alarmObj['time'][1].toString().length > 1 ? this.props.alarmObj['time'][1] : "0" + this.props.alarmObj['time'][1] } ${ this.props.alarmObj['time'][2] }` 
 							}
 						</h1>
 					</div>
@@ -105,6 +105,7 @@ export default class Alarm extends PureComponent {
 											booleanPropsChange={ this.props.booleanPropsChange }
 											selectRepeatDaysState={ this.props.selectRepeatDaysState }
 											i={ this.props.i }	
+											weekStart={ this.props.weekStart } 
 								/>
 							)
 						:
@@ -220,20 +221,19 @@ export default class Alarm extends PureComponent {
 							:
 							
 							this.props.alarmObj['collapsed'] === true ? (
-									<span className="day-or-delete opacity"
-										  onMouseUp={ () => this.props.removeAlarmState(this.props.i) }>
+									<span className="day-or-delete opacity">
 										{ 
 											this.props.isRinging !== null || this.props.alarmObj['snooze'] !== null ? 
 													"Today" 
 												: 
 													(
 														this.props.alarmObj.label !== null ? 
-																this.props.alarmObj.label + " " 
+																`${ this.props.alarmObj.label } ` 
 															: 
 																""
 													) + alarmDaysLabel(
-															this.props.alarmObj, 
-															false
+															this.props.alarmObj, false, 
+															this.props.weekStart, 0
 														) 
 										}
 									</span>	
@@ -256,4 +256,4 @@ export default class Alarm extends PureComponent {
 			</li>
 		);
 	}
-}
+};

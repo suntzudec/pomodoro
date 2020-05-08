@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import SetAlarm from './set-alarm/set-alarm.jsx';
@@ -10,14 +10,16 @@ import codeToObjectURL from '../workers/web/to-object-url.js';
 
 import setAlarmButtonStyle from './alarm-clock-styles/set-alarm-button.js';
 
+import { alarmSilenceArr } from '../settings/display/settings-data.js'; 
+
 let serialNumber = 0; 
 
-const alarmWorker = typeof Worker !== "undefined" ? 
+export const alarmWorker = typeof Worker !== "undefined" ? 
 				codeToObjectURL(alarmWorkerScript) 
 			: 
 				undefined;
 
-export class AppAlarmClock extends React.PureComponent {
+export default class AppAlarmClock extends React.PureComponent {
 	constructor(props){
 		super(props);
 	}
@@ -33,7 +35,7 @@ export class AppAlarmClock extends React.PureComponent {
 			'repeat-days': [ 0, 1, 2, 3, 4, 5, 6 ],	
 			'vibrate': false, 
 			'collapsed': true, 
-			'ringtone': 0,
+			'ringtone': this.props.defRingtone,
 			'ringtoneSelect': false,
 			'ringing': false,
 			'dismiss': false, 
@@ -44,7 +46,7 @@ export class AppAlarmClock extends React.PureComponent {
 		this.props.addAlarmState(alarmObj);
 	}
 	
-	turnAlarmOFF(obj){				console.log("turnAlarmOff")
+	turnAlarmOFF(obj){				
 		const indexOFF = this.props.alarmList.findIndex(item => item.serial === obj.OFF);	
 		this.props.powerChangeState(indexOFF, "off");
 	}
@@ -69,24 +71,36 @@ export class AppAlarmClock extends React.PureComponent {
 	}
 	
 	loopDismissArray(dismiss){
-		dismiss.forEach(item => this.setDismissFunction(item))
+		dismiss.forEach(item => this.setDismissFunction(item));
 	}
 	
 	workerHandler(){
 		alarmWorker.onmessage = (message) => {
-			const obj = JSON.parse(message.data);
-			
-			if(obj.hasOwnProperty("OFF")){
+			const obj = JSON.parse(message.data);							console.log(obj, "obj")
+			if("VOL" in obj){
+				return this.props.ringingVolumeChangeState(0.1);
+			}
+			else if("FORCE_END" in obj){
+				return this.props.initRingingState(
+					obj["FORCE_END"], 
+					false, 
+					true
+				);
+			}   
+			else if("OFF" in obj){
 				return this.turnAlarmOFF(obj);
 			}
-			else if(obj.hasOwnProperty("DISMISS")){	
+			else if("DISMISS" in obj){	
 				return this.loopDismissArray(obj["DISMISS"]);
 			}
-			else if(obj.hasOwnProperty("ALARM_PRESENT")){
+			else if("ALARM_PRESENT" in obj){
 				return this.setAlarmPresent(obj);
-			}
-			
-			this.props.initRingingState(JSON.parse(message.data).serial, true, false); 
+			}													
+			this.props.initRingingState(
+				obj.serial, 
+				true, 
+				false
+			); 
 		};
 			
 		alarmWorker.onerror = (error) => {
@@ -94,17 +108,49 @@ export class AppAlarmClock extends React.PureComponent {
 		};
 	}
 	
-	componentDidMount(){
+	postMessage(obj){
+		alarmWorker.postMessage(
+			JSON.stringify(
+				obj
+			)
+		);
+	}
+	
+	workerAlarmSettings(){
+		let silence = alarmSilenceArr[this.props.silenceAfter];
+		
+		if(typeof silence === "number"){
+			silence *= 60;
+		}
+		
+		//alarmWorker.postMessage(
+			//JSON.stringify(
+			this.postMessage(
+				{
+					'silence': silence,
+					'increase-vol': +this.props.increaseVol,
+					'increase-bool': this.props.increaseVolBool,
+					'snooze-duration': +this.props.snoozeDuration * 60,	
+					'alarm-vol': +this.props.volume
+				}
+			)
+			//)
+		//);
+	}
+	
+	componentDidMount(){ 
 		this.props.recordPrevHashState(window.location.hash);
 		
 		if(alarmWorker !== undefined){
+			this.workerAlarmSettings(); 
 			this.workerHandler();
 		}
 	}
 	
-	componentDidUpdate(){ 		
+	componentDidUpdate(){				console.log("compdidupdate")
 		if(this.props.alarmListIndexChanged !== null){
 			let item;
+			
 			if(typeof this.props.alarmListIndexChanged === "number"){
 				item = this.props.alarmList[this.props.alarmListIndexChanged];
 			}
@@ -112,10 +158,12 @@ export class AppAlarmClock extends React.PureComponent {
 				item = this.props.alarmListIndexChanged;
 			}
 			
-			alarmWorker.postMessage(
-				 JSON.stringify(
+			this.props.indexToNullState(); 
+			
+			/* alarmWorker */this.postMessage(
+				 //JSON.stringify(
 					item
-				)
+				//)
 			); 
 		}
 	}
@@ -148,12 +196,22 @@ export class AppAlarmClock extends React.PureComponent {
 									 alarmList={ this.props.alarmList } 
 									 initRingingState={ this.props.initRingingState }
 									 initSnoozeState={ this.props.initSnoozeState }
+									 volume={ this.props.volume } 
+									 volChange={ this.props.volChange }
+									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
+									 increaseVolBool={ this.props.increaseVolBool }
 							/>
 						:
-							null 
+							null    
 				} 
 				<ul id="alarm-ul" 
-					style={ this.props.setAlarm ? { visibility: "hidden" } : null  }>
+					style={ this.props.setAlarm ? 
+							{ visibility: "hidden" } 
+						: 
+							this.checkForRingtoneSelect(this.props.alarmList) ? 
+									{ overflowY: "hidden" }  
+								: 
+									null }>
 					{
 						this.props.alarmList.map((alarm, i) => {
 							return (
@@ -175,6 +233,7 @@ export class AppAlarmClock extends React.PureComponent {
 									   setAlarm={ this.props.setAlarm }
 									   setDismissState={ this.props.setDismissState }
 									   isRinging={ this.props.isRinging }
+									   weekStart={ this.props.weekStart }
 								/>
 							);
 						})
@@ -187,24 +246,22 @@ export class AppAlarmClock extends React.PureComponent {
 						:
 							null
 				}
-					<button id="new-alarm"
-							className={ this.props.setAlarm ? "far fa-bell" : null }
-							style={ setAlarmButtonStyle(this.props.setAlarm) }
-							onMouseUp={ () => !this.props.setAlarm ? 
-								this.props.setAlarmState() 
-							: 
-								this.alarmToList(
-									typeof this.props.alarmEditIndex !== "number"
-								) }	
-							disabled={ this.checkForRingtoneSelect(this.props.alarmList) || typeof this.props.isRinging === "number" }>
-						{ !this.props.setAlarm ? "+" : null  }		
-					</button>
+				<button id="new-alarm"
+						className={ this.props.setAlarm ? "far fa-bell" : null }
+						style={ setAlarmButtonStyle(this.props.setAlarm) }
+						onMouseUp={ () => !this.props.setAlarm ? 
+							this.props.setAlarmState() 
+						: 
+							this.alarmToList(
+								typeof this.props.alarmEditIndex !== "number"
+							) }	
+						disabled={ this.checkForRingtoneSelect(this.props.alarmList) || typeof this.props.isRinging === "number" }>
+					{ !this.props.setAlarm ? "+" : null  }		
+				</button>
 			</div>
 		);
 	}
 };
-
-export { alarmWorker }; 
 
 AppAlarmClock.propTypes = {
 	alarmList: PropTypes.arrayOf(

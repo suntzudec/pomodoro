@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import { alarmWorker } from './app-alarm-clock.jsx';
 import ringtoneArray from './alarm/ringtone-array.js';
@@ -11,12 +11,15 @@ export default class Ringing extends React.PureComponent {
 		this.loop = 0;
 	}
 	
-	componentDidMount(){
+	componentDidMount(){ 
+		this.ringtone.volume = +this.props.volume / 100;
 		this.ringtone.play();
 	}
 	
-	componentDidUpdate(){
-		const notNull = this.props.alarmListIndexChanged !== null;
+	componentDidUpdate(){	
+		this.volumeIncreaseHandler();	
+		
+		/* const notNull = this.props.alarmListIndexChanged !== null; //perhaps remove below...
 		const notAlarmPath = window.location.hash !== "#/alarm-clock";
 		
 		if(notNull && notAlarmPath){
@@ -28,12 +31,51 @@ export default class Ringing extends React.PureComponent {
 			else {
 				item = this.props.alarmListIndexChanged;
 			}
-			
+			console.log(item, "CROSSED IN RINGING")
 			alarmWorker.postMessage(
 				 JSON.stringify(
 					item
 				)
 			); 
+		}  */
+		
+	}
+	
+	componentWillUnmount(){ //refactor...
+		this.props.ringingVolumeChange(0);
+		
+		if(this.type === true){
+			this.postMessage({
+					"RINGING_ENDED": this.props.alarmList[this.props.isRinging]
+				});
+		}
+		else if(window.location.hash !== "#/alarm-clock"){
+			//console.log(this.props.alarmList[this.props.isRinging], "KK")
+			this.postMessage(
+				this.props.alarmList[this.props.isRinging]
+			);
+		}
+	}
+	
+	postMessage(message){
+		alarmWorker.postMessage(
+			JSON.stringify(
+				message
+			)
+		);
+	}
+	
+	volumeIncreaseHandler(){
+		if(this.props.increaseVolBool === true && this.ringtone.volume < 1.0){
+			
+			let preVol = (+this.props.volume / 100) + this.props.volChange;
+			//console.log(preVol, +this.props.volume / 100, this.props.volChange)
+			if(preVol > 1){
+				preVol = 1;
+			}
+			
+			this.ringtone.volume = preVol;
+		//	console.log(this.ringtone.volume, "ringtone volume")
 		}
 	}
 	
@@ -78,6 +120,7 @@ export default class Ringing extends React.PureComponent {
 								) 
 							: 
 								this.loopAudio() } 
+								
 					   ref={ (elem) => this.ringtone = elem }>
 					{ "Your Browser Doesn't Support Audio Tags" }	
 				</audio>

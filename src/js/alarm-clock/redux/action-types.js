@@ -15,3 +15,5 @@ export const RINGING = "RINGING";
 export const ALARM_PRESENT = "ALARM_PRESENT"; 
 export const DISMISS = "DISMISS";
 export const SNOOZE = "SNOOZE";
+export const VOL_CHANGE = "VOL_CHANGE"; 
+export const TO_NULL = "TO_NULL";

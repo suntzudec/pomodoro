@@ -1,26 +1,27 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
+import Proptypes from 'prop-types';
+
 import maintObj from '../clock/time-maintenance.js';
 
-import ClockSettings from './clock-settings.jsx';
-import AlarmSettings from './alarm-settings.jsx';
-import TimerSettings from './timer-settings.jsx';
+import ClockSettings from './sections/clock-settings.jsx';
+import AlarmSettings from './sections/alarm-settings.jsx';
 
-import SettingsMapComp from './settings-map-comp.jsx'; 
+import SettingsMapComp from './select-components/settings-map-comp.jsx';   
+import Range from './select-components/range.jsx'; 
 
-import { gmtZonePresentation, getRingtoneName, addMinuteLabel, getWeekStart } from './gmt-display.js'; 
+import { gmtZonePresentation, getRingtoneName, addMinuteLabel, getWeekStart } from './display/select-functions.js'; 
 
 import ringtoneArray from '../alarm-clock/alarm/ringtone-array.js';
-import { alarmSilenceArr, weekStart } from './settings-data.js';
+import { alarmSilenceArr, weekStart } from './display/settings-data.js';
 
-import Range from './range.jsx'; 
-
+import Ringing from '../alarm-clock/ringing.jsx'; 
 
 export default class AppSettings extends React.PureComponent {
 	constructor(props){
 		super(props);
 	}
 	
-	back(){
+	previousHash(){
 		window.location.href = `${ window.location.origin }/${ this.props.prevHash }`;
 	}	
 	
@@ -31,13 +32,26 @@ export default class AppSettings extends React.PureComponent {
 	}
 	
 	render(){
-		
 		return (
-			<main id="settings-main">
-			
-				<h1>
+			<div id="settings-container">
+				{
+					typeof this.props.isRinging === "number" ? 
+							<Ringing alarmListIndexChanged={ this.props.alarmListIndexChanged }	
+									 isRinging={ this.props.isRinging } 
+									 alarmList={ this.props.alarmList } 
+									 initRingingState={ this.props.initRingingState }
+									 initSnoozeState={ this.props.initSnoozeState }
+									 volume={ this.props.valueObj['alarm-vol'] } 
+									 volChange={ this.props.volChange }
+									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
+									 increaseVolBool={ this.props.incr_vol }
+							/>
+						:
+							null
+				}
+				<h1 className="opacity">
 					<span className="fas fa-arrow-left"
-					      onMouseUp={ (e) => this.back() } 
+					      onMouseUp={ (e) => this.previousHash() } 
 					/>
 					{ "Settings" }
 				</h1>
@@ -66,18 +80,6 @@ export default class AppSettings extends React.PureComponent {
 							null
 				}
 				{
-					this.props.selectObj['timers'] === true ?
-							<SettingsMapComp collection={ ringtoneArray } 
-											 index={ this.props.indexObj['timers'] }
-											 func={ getRingtoneName } 
-											 part='timers'
-											 changeSelectState={ this.props.changeSelectState } 
-											 setIndexState={ this.props.setIndexState }
-							/>
-						:
-							null
-				}
-				{
 					this.props.selectObj['silence'] === true ?
 							<SettingsMapComp collection={ alarmSilenceArr } 
 											 index={ this.props.indexObj['silence'] }
@@ -93,10 +95,10 @@ export default class AppSettings extends React.PureComponent {
 					this.props.selectObj['snooze'] === true ? 
 							<Range value={ this.props.valueObj['snooze'] } 
 								   changeValueState={ this.props.changeValueState } 
-								   part='snooze'
+								   part='snooze' 
 								   disp='snooze'
 								   changeSelectState={ this.props.changeSelectState }
-								   unit='minutes'
+								   unit='minutes' 
 								   min='1'
 								   max='30'
 								   step='1'
@@ -133,7 +135,6 @@ export default class AppSettings extends React.PureComponent {
 							/>
 						:
 							null
-						
 				}
 				{
 					this.props.selectObj['week-start'] === true ? 
@@ -143,13 +144,17 @@ export default class AppSettings extends React.PureComponent {
 											 part='week-start'
 											 changeSelectState={ this.props.changeSelectState }
 											 setIndexState={ this.props.setIndexState }
-							
 							/>
 						:
 							null
 				}
-				<ul id="container">
-					<ClockSettings cs={ this.props } />
+				<ul id="container" 
+					className="opacity">
+					<ClockSettings homeDisplay={ this.props.homeDisplay }
+								   changeHomeClockDispState={ this.props.changeHomeClockDispState }
+								   changeSelectState={ this.props.changeSelectState }
+								   indexObj={ this.props.indexObj }	
+					/> 
 					<AlarmSettings tone={ ringtoneArray[this.props.indexObj['alarm']] }
 								   changeSelectState={ this.props.changeSelectState } 
 								   silence={ alarmSilenceArr[this.props.indexObj['silence']] }
@@ -158,11 +163,34 @@ export default class AppSettings extends React.PureComponent {
 								   incr_vol={ this.props.incr_vol }
 								   increaseVolumeState={ this.props.increaseVolumeState }
 					/>
-					<TimerSettings tone={ ringtoneArray[this.props.indexObj['timers']] } 
-								   changeSelectState={ this.props.changeSelectState } 
-					/>
 				</ul>
-			</main>
+			</div>
 		);
 	}
+};
+
+AppSettings.propTypes = {
+	indexObj: Proptypes.shape({
+		'home': Proptypes.number.isRequired,
+		'alarm': Proptypes.number.isRequired,
+		'silence': Proptypes.number.isRequired,
+		'week-start': Proptypes.number.isRequired 
+	}).isRequired,
+	homeDisplay: Proptypes.bool.isRequired,    
+	prevHash: Proptypes.string.isRequired,
+	selectObj: Proptypes.shape({
+		'home': Proptypes.bool.isRequired,
+		'alarm': Proptypes.bool.isRequired,
+		'silence': Proptypes.bool.isRequired,
+		'snooze': Proptypes.bool.isRequired,
+		'alarm-vol': Proptypes.bool.isRequired,
+		'increase-vol': Proptypes.bool.isRequired,
+		'week-start': Proptypes.bool.isRequired
+	}).isRequired,
+	valueObj: Proptypes.shape({
+		'snooze': Proptypes.string.isRequired,
+		'increase-vol': Proptypes.string.isRequired,
+		'alarm-vol': Proptypes.string.isRequired
+	}).isRequired,
+	incr_vol: Proptypes.bool.isRequired
 }

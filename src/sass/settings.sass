@@ -1,11 +1,9 @@
 body
-	#settings-main
+	#settings-container
 		padding-left: 5%
 		background: #010125
-		
 		margin: 0
 		z-index: 0
-		opacity: 0.8
 		
 		h1
 			display: inline-block
@@ -13,6 +11,9 @@ body
 			
 			.fa-arrow-left
 				margin-right: 20px
+				
+		.opacity
+			opacity: 0.825  
 				
 		.range
 			margin: 0 auto
@@ -23,6 +24,7 @@ body
 			grid-template-columns: 50% 15% 35%
 			grid-template-rows: 100%
 			width: 85%
+			max-width: 600px
 			padding: 2%
 			background: #555555
 			z-index: 6
@@ -52,7 +54,6 @@ body
 					float: left
 					
 					input
-						
 						display: inline-block
 						height: 20px
 						width: 150px
@@ -72,16 +73,11 @@ body
 					top: 50%
 					transform: translateY(-50%)
 					opacity: 0.8
-					
-					&:hover
 						
-					
 					&:active
 						opacity: 1
 						color: blue
 						
-					
-				
 		.section
 			margin: 0 auto
 			position: absolute
@@ -119,28 +115,29 @@ body
 						font-size: 1em
 						position: relative
 						bottom: 6.5px		
-			
-			button
-				padding: 1.75%
-				font-size: 1.25em
-				border: 2px solid #fff
-				font-weight: 900
-				text-align: center
-				float: right
-				position: relative
-				right: 5px
-				opacity: 0.9
-				background: #222222
-				border-radius: 5%
+						
+			#map-button-cont
+				width: 100%
 				
-				&:active
-					top: 7.5px
-			
-			.not-home
-				margin-top: 90%
+				button
+					padding: 2%
+					font-size: 1.55em
+					font-weight: 200
+					border: 2px outset #fff
+					box-shadow: 0.5px 1.3px 1.8px 0.6px #444444
+					text-align: center
+					float: right
+					position: relative
+					right: 5px
+					opacity: 0.9
+					background: #222222
+					border-radius: 4.5%
+					
+					&:active
+						top: 7.5px
 			
 		#container
-			height: 83vh
+			height: 100vh
 			width: 100%
 			padding-left: 0
 			overflow-y: auto
@@ -153,12 +150,15 @@ body
 					margin-top: 10px
 					margin-bottom: 0
 					
+				#alarm-settings-list
+					padding-bottom: 20vh	
+					
 				ul
 					list-style: none
 					padding-left: 15px
 					margin-top: 5px
 					padding-right: 15px
-						
+				
 					li
 						h4
 							margin-top: 10px
@@ -200,7 +200,7 @@ body
 							width: 1.4em
 							height: 1.4em	
 						
-						#home-clock-desc, #incr-vol
+						#home-clock-desc, #incr-vol-alarm, #incr-vol-timers
 							font-size: 15px
 							display: inline-block
 							width: 60%
@@ -226,7 +226,7 @@ body
 								top: 4px
 								
 						.grey
-							opacity: 0.5
+							opacity: 0.6
 								
 @media (orientation: landscape)
 	body
@@ -234,5 +234,17 @@ body
 			#routing-container
 				#settings-main
 					.section
-						button
-							margin-top: 70vh
+						max-height: 60vh
+						
+						.list
+							max-height: 52vh
+							
+						#map-button-cont
+							button
+								padding: 1.5%
+						
+					#container
+						li
+							#alarm-settings-list
+								padding-bottom: 30vh
+						

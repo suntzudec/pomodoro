@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import SWWorkerScript from './stopwatch-worker.js';
@@ -256,6 +256,10 @@ export default class AppStopWatch extends React.PureComponent {
 									 alarmList={ this.props.alarmList } 
 									 initRingingState={ this.props.initRingingState }
 									 initSnoozeState={ this.props.initSnoozeState }
+									 volume={ this.props.volume } 
+									 volChange={ this.props.volChange }	//TEST
+									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
+									 increaseVolBool={ this.props.increaseVolBool }	//TEST
 							/>
 						:
 							null

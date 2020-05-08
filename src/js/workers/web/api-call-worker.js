@@ -47,7 +47,6 @@ const apiCallWorkerHandler = function(){
 	worker.onmessage = function(message){
 		if(message['data']){
 			maintObj.setBaseData(message['data']);  				
-	
 			localStorageProps(message['data']);
 			
 			worker.terminate();

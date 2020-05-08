@@ -25,10 +25,11 @@ const SettingsMapComp = (props) => {
 					})
 				}
 			</ul>
-			<button className={ props.part !== 'home' ? 'not-home' : null } 
-					onMouseUp={ () => props.changeSelectState(props.part) }>
-				{ "okay" }
-			</button>
+			<div id="map-button-cont">
+				<button onMouseUp={ () => props.changeSelectState(props.part) }>
+					{ "okay" }
+				</button>
+			</div>
 		</section>
 	);
 };

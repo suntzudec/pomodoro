@@ -53,7 +53,9 @@ const selectedToTop = (selected, baseData) => {
 		return index;
 	});
 	
-	return JSON.stringify(selectedArray.concat(parsed));
+	return JSON.stringify(
+		selectedArray.concat(parsed)
+	);
 };
 
 const homeTimezone = (tzData) => {

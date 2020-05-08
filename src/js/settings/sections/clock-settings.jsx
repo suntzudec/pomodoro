@@ -1,7 +1,7 @@
 import React from 'react';
-import maintObj from '../clock/time-maintenance.js';
+import maintObj from '../../clock/time-maintenance.js';
 
-import { gmtZonePresentation } from './gmt-display.js'; 
+import { gmtZonePresentation } from '../display/select-functions.js'; 
 
 const ClockSettings = (props) => {
 	return (
@@ -15,8 +15,8 @@ const ClockSettings = (props) => {
 						{ "Display home clock" }
 					</h4>
 					<input type="checkbox" 
-						   defaultChecked={ props.cs.homeDisplay }
-						   onChange={ () => props.cs.changeHomeClockDispState() }
+						   defaultChecked={ props.homeDisplay }
+						   onChange={ () => props.changeHomeClockDispState() }
 					/>
 					<br />
 					<span id="home-clock-desc">
@@ -26,16 +26,16 @@ const ClockSettings = (props) => {
 				</li>
 				<li>
 					<h4 id="h-timezone"
-						className={ props.cs.homeDisplay === true ? null : "grey" }>
+						className={ props.homeDisplay === true ? null : "grey" }>
 						{ "Home timezone" }
 					</h4>
 					<button id="grey-button-clock"
-							onMouseUp={ () => props.cs.changeSelectState('home') }
-						    className={ props.cs.homeDisplay === true ? null : "grey" }
-							disabled={ props.cs.homeDisplay === false }>
+							onMouseUp={ () => props.changeSelectState('home') }
+						    className={ props.homeDisplay === true ? null : "grey" }
+							disabled={ props.homeDisplay === false }>
 						{ 
 							gmtZonePresentation(
-								maintObj.getGeneral("zonesAndGMT")[props.cs.indexObj['home']]
+								maintObj.getGeneral("zonesAndGMT")[props.indexObj['home']]
 							) 
 						}
 					</button>

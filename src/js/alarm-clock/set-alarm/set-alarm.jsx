@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import { alarmCalcDirector, alarmIndexDirector } from './hand-position.js';
 import { forwardDirector, backwardDirector, valueLimitCheck, 
@@ -180,6 +180,7 @@ export default class SetAlarm extends React.PureComponent {
 			type === 1 ) === false){
 			return; 
 		}
+		
 		let nextIndex, 
 			direct = type;
 			
@@ -423,7 +424,11 @@ export default class SetAlarm extends React.PureComponent {
 							cx="350" 
 							cy="375" 
 							r="230" 
-							onMouseMove={ (e) => this.mousedown === true && e.buttons === 1 ? this.touchMoveFilter(e) : null }	
+							onMouseMove={ (e) => this.mousedown === true && e.buttons === 1 ? 
+									this.touchMoveFilter(e) 
+								: 
+									null 
+							}	
 					/>
 					{ 
 						this.currentClock.map((num, i) => {
@@ -471,7 +476,11 @@ export default class SetAlarm extends React.PureComponent {
 							onTouchMove={ (e) => this.touchMoveFilter(e) }
 							onMouseDown={ (e) => this.mousedownTrue(e) }
 							onMouseUp={ () => this.mousedownFalse(true) }
-							onMouseMove={ (e) => e.buttons === 1 ? this.touchMoveFilter(e) : null }
+							onMouseMove={ (e) => e.buttons === 1 ? 
+									this.touchMoveFilter(e) 
+								: 
+									null 
+							}
 					/>
 					<circle cx="348" 
 							cy="365"
@@ -481,4 +490,4 @@ export default class SetAlarm extends React.PureComponent {
 			</div>
 		);
 	}
-}
+};

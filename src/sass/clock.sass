@@ -50,7 +50,7 @@ body
 			#alarm_pres
 				font-size: 18px
 				margin: 0 auto
-				opacity: 0.6
+				opacity: 0.55
 				
 				span
 					margin-left: 1.15%
@@ -76,6 +76,7 @@ body
 				li
 					padding: 10px
 					font-weight: 100
+					line-height: 1.45
 			
 		#clock-list
 			list-style: none
@@ -100,8 +101,20 @@ body
 					top: 0.4vh
 					width: 16.5px
 					height: 16.5px
+
+@media (max-width: 600px) and (orientation: portrait)
+	body
+		#clock-container
+			#heading-container
+				#selected-list
+					padding-bottom: 15%
+			
+			#world-cont
+				#world-button
+					font-size: 7.75vw
+	
 							
-@media screen and (max-device-width: 450px)
+@media (max-width: 450px)
 	body
 		#clock-container
 			#heading-container
@@ -142,7 +155,7 @@ body
 				#alarm_pres
 					font-size: 15px	
 
-@media (orientation: landscape) and (max-device-height: 800px)
+@media (orientation: landscape)
 	body
 		#clock-container
 			#heading-container
@@ -160,16 +173,20 @@ body
 					
 					span
 						margin-left: 0.75%
+			
+				#selected-list
+					width: 85%
+					max-width: 800px
+					
+					li
+						font-size: 16px	
 						
 			#clock-list
 				li
 					.check
 						margin: 0.5vw
 						
-			#selected-list
-				li
-					font-size: 1.9vw
-					
 			#world-cont
 				#world-button
-					font-size: 3.5vw				
+					font-size: 3.5vw		
+

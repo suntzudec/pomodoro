@@ -76,18 +76,27 @@ export const initRinging = (serial, bool, ended) => ({
 	ended: ended
 });
 
-export const setAlarmPresent = (index) => ({ //TEST
+export const setAlarmPresent = (index) => ({ 
 	type: types.ALARM_PRESENT,
 	index: index
 });
 
-export const setDismiss = (index, bool) => ({	//TEST
+export const setDismiss = (index, bool) => ({	
 	type: types.DISMISS,
 	index: index,
 	bool: bool
-});	//TEST
+});	
 
-export const initSnooze = (index) => ({	//TEST
+export const initSnooze = (index) => ({	
 	type: types.SNOOZE,
 	index: index
-});	//TEST
+});	
+
+export const ringingVolumeChange = (value) => ({	
+	type: types.VOL_CHANGE,
+	value: value
+});
+
+export const indexToNull = () => ({
+	type: types.TO_NULL
+});

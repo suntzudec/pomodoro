@@ -81,16 +81,12 @@ export function correctHourCycle(bool, hour){
 			return 1;
 		}
 		return hour + 1;
-		//return hour === 12 ? 
-			//1 : hour + 1;
 	}
 	else {
 		if(hour === 1){
 			return 12;
 		}
 		return hour - 1;
-		//return hour === 1 ? 
-			//12 : hour - 1;
 	}
 }
 

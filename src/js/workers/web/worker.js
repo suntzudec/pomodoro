@@ -1,4 +1,4 @@
-const apiWorker = () => {
+const apiWorker = function(){
 	let sortArray = [ ];
 	
 	const sortData = (data) => {

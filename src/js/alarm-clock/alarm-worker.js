@@ -1,11 +1,32 @@
 const alarmWorkerScript = function(){
 	let stamp,
 		list,
+		setRepeat = false,
 		alarm_present = null,
 		interval = null,
-		currentRing = null;
+		currentRing = null,
+		alarmSettingsObj = { },
+		ringLimit = 0,
+		increaseVol = 0;
 	
-	const returnMessage = (node) => {	
+	const buildTimeStamp = (listTime) => {				
+		const date = new Date();
+		const year = date.getFullYear();
+		const month = date.getMonth();
+		const day = date.getDate();
+		const base = listTime;
+		const corrected = processTimeArr(base);	
+		const dateObj = new Date(year, month, day, corrected[0], corrected[1]); 
+		let newStamp = dateObj.getTime();
+		
+		if(newStamp < Date.now()){	
+			newStamp += (86400 * 1000);
+		}	
+		
+		return newStamp / 1000;								
+	};
+	
+	const returnMessage = function(node){	
 		self.postMessage(JSON.stringify(node));
 	};
 	
@@ -14,7 +35,7 @@ const alarmWorkerScript = function(){
 		let length = 0;
 		let upperIndex = 0;
 		
-		var Node = function(serial, power, timestamp, strObj){
+		const Node = function(serial, power, timestamp, strObj){
 			this.serial = serial;
 			this.timestamp = timestamp;
 			this.data = JSON.stringify(strObj);
@@ -93,7 +114,7 @@ const alarmWorkerScript = function(){
 				
 				currentNode = currentNode.next;
 			}
-			return serial
+			return serial;
 		};
 		
 		this.traverseNextArrayListForPower = function(){
@@ -111,7 +132,7 @@ const alarmWorkerScript = function(){
 			return nextArray;
 		};
 	  
-		this.traverseNextPathForSerialValue = function(serial){
+		this.traverseNextPathForSerialValue = function(serial){		
 			let currentNode = head;
 			
 			while(currentNode){
@@ -125,7 +146,7 @@ const alarmWorkerScript = function(){
 		};
 		
 		this.calculateStampWSnooze = function(stamp, snooze){
-			return (snooze - stamp) + 60/* 0 */;
+			return (snooze - stamp) + alarmSettingsObj['snooze-duration'];
 		};
 		
 		this.traverseNextPathForStampValue = function(stamp){ 
@@ -203,10 +224,10 @@ const alarmWorkerScript = function(){
 		
 		this.nextPathAtSerial = function(serial){
 			if(head === null){
-			  return head;
+				return head;
 			}
 			if(serial > upperIndex || serial < 0){
-			  return null;
+				return null;
 			}
 			
 			let currentNode = head;
@@ -217,9 +238,17 @@ const alarmWorkerScript = function(){
 			return currentNode;
 		};
 		
+		this.nodeDismissToFalse = function(data){	
+			const parsed = JSON.parse(data); 
+			parsed.dismiss = false;
+			
+			return JSON.stringify(parsed);
+		};	
+		
 		this.updateTimestamp = function(days, node){
 			let prev = days[0],
-				curr = days[1];
+				curr = days[1],
+				diff;
 				
 			function dayGap(init, i){
 				if(prev === curr){
@@ -235,26 +264,24 @@ const alarmWorkerScript = function(){
 				}
 				dayGap(prev, i);
 			}
-			dayGap(prev, 0);
-							
+			dayGap(prev, 0);					//console.log(diff, "DIFF")				
 			node.timestamp += (86400 * diff);
 		};
 		
-		this.generateNewTimestamp = function(node){ 
-			const nodeData = JSON.parse(node.data);				//console.log(nodeData, "gen new time")
+		this.generateNewTimestamp = function(node, millistamp){ 
+			const nodeData = JSON.parse(node.data);				
 			const calcDay = (value) => {
 				const min = Math.min.apply(null, nodeData['repeat-days']);
 				const max = Math.max.apply(null, nodeData['repeat-days']);
 				
-				if(value >= max){ 
+				if(value >= max || value < min){ 
+				console.log("min returned")
 					return min;
-				}
-				else if(value < min){
-					return max;
 				}
 				else {
 					let val = value + 1,
 						newDay;
+						
 					!function incre(){
 						if(!val){
 							newDay = val;
@@ -278,16 +305,68 @@ const alarmWorkerScript = function(){
 				}
 			};
 			
-			if(nodeData['repeat'] === true){
-				const day = new Date(node.timestamp * 1000).getDay();
-				const nextDay = calcDay(day);	
+			if(nodeData['repeat'] === true){ 
+				const stamp = this.setStampFromArguments(node.timestamp, millistamp);
+				const day = new Date(stamp).getDay(); 
+				const nextDay = calcDay(day);							//console.log(day, "DAY", nextDay)
 				this.updateTimestamp([ day, nextDay ], node);
 			}
-			else {												//console.log("node: ", node, " turned off")
+			else {												
 				returnMessage({ 
 					"OFF": node.serial 
 				});
 			}
+		};
+		
+		this.setStampFromArguments = function(nodestamp, millistamp){
+			if(millistamp){
+				return millistamp;
+			}
+			return nodestamp * 1000;
+		};
+		
+		this.checkRepeatDaysForDay = function(repData, stamp){
+			return repData.indexOf(new Date(stamp).getDay()) === -1;
+		};
+		
+		this.commonConditions = function(snooze, setRep){
+			return setRep === false && !snooze;
+		};
+		
+		this.buildTSForRepeat = function(setRepBool, repeat){
+			return setRepBool === true && repeat === true;
+		};
+		
+		this.buildTSForNoRepeat = function(node, repeat){
+			const secStamp = Date.now() / 1000;
+			return node.timestamp < secStamp && repeat === false && node.power === true;
+		};
+		
+		this.turnOffRepeat = function(node, obj){
+			const repeat = JSON.parse(node.data).repeat;
+			return repeat === true && node.power === true && obj.repeat === false;
+		};
+		
+		this.manageSetRepeat = function(node){
+			const data = JSON.parse(node.data);
+			
+			if(this.buildTSForNoRepeat(node, data.repeat) && this.commonConditions(node.snooze, data.setRepeat)){ 
+								//console.log("TIMESTAMP BUILD")
+				node.timestamp = buildTimeStamp(data['time'].slice());
+			} 
+			
+			if(data.setRepeat === true){
+				setRepeat = true;
+			}
+			else if(this.buildTSForRepeat(setRepeat, data.repeat) && this.commonConditions(node.snooze, data.setRepeat)){
+				const initStamp = buildTimeStamp(data['time'].slice());				//console.log(initStamp, "HERE Check!!")
+				node.timestamp = initStamp;										//console.log(node, "NODE")
+				if(this.checkRepeatDaysForDay(data['repeat-days'], initStamp * 1000)){		//console.log("last if")
+					this.generateNewTimestamp(node);
+				}
+				
+				setRepeat = false;
+			} 
 		};
 	}
 
@@ -304,24 +383,7 @@ const alarmWorkerScript = function(){
 		return base;
 	};
 	
-	const buildTimeStamp = (listTime) => {				
-		const date = new Date();
-		const year = date.getFullYear();
-		const month = date.getMonth();
-		const day = date.getDate();
-		const base = listTime;
-		const corrected = processTimeArr(base);	
-		const dateObj = new Date(year, month, day, corrected[0], corrected[1]); 
-		let newStamp = dateObj.getTime();
-		
-		if(newStamp < Date.now()){	
-			newStamp += (86400 * 1000);
-		}	
-		
-		return newStamp / 1000;								
-	};
-	
-	const compare_alarm_present = (current_ap, next_ap) => { 
+	const compare_alarm_present = function(current_ap, next_ap){ 
 		if(current_ap === next_ap){
 			return;
 		}
@@ -333,57 +395,131 @@ const alarmWorkerScript = function(){
 		alarm_present = next_ap;
 	};
 	
-	const checkCurrentRing = (serial) => {
-		if(serial === currentRing){				//console.log("currentRing = serial: ", currentRing)
+	const checkCurrentRing = function(serial){ 
+		if(serial === currentRing){				
 			currentRing = null;
 		}
 	};
 	
-	const hasProp = (item, str) => {
-		return item.hasOwnProperty(str); 
+	const volumeLimitCheck = () => {
+		console.log(alarmSettingsObj['alarm-vol'], (ringLimit / alarmSettingsObj['increase-vol']) * 10)
+		return alarmSettingsObj['alarm-vol'] + ((ringLimit / alarmSettingsObj['increase-vol']) * 10);
 	};
 	
-	const listInstanceController = (obj) => { //console.log(obj, "obj @ listInstanceController", listInstance.head());	
-		if(hasProp(obj, 'time')){
+	const checkVolumeIncrease = () => {
+		return increaseVol === alarmSettingsObj['increase-vol'] && volumeLimitCheck() <= alarmSettingsObj['for-increase'];
+	};
+	
+	const setForIncrease = (alarmVol) => {
+		let ones = alarmVol.toString();
+		ones = +ones[ones.length-1]
+		return 100 + ones;
+	}
+	
+	const checkForceEnd = () => {
+		return alarmSettingsObj['silence'] !== "Never" && ringLimit >= alarmSettingsObj['silence'];
+	};
+	
+	const ringingSettingsTasks = function(){   
+		ringLimit++;		
+		
+		if(alarmSettingsObj['increase-bool'] === true){
+			increaseVol++;				//console.log("ringingSettingsTasks")
+			if(checkVolumeIncrease()){
+				increaseVol = 0;		
+				
+				returnMessage({ 
+					"VOL": currentRing 
+				});
+			}
+		}
+		
+		if(checkForceEnd()){
+			returnMessage({ 
+				"FORCE_END": currentRing 
+			});
+		}
+	};
+	
+	const checkForRingingTasks = () => {
+		return alarmSettingsObj['silence'] !== "Never" || alarmSettingsObj['increase-bool'] === true;
+	};
+	
+	const ringingTasksDirector = function(){
+		if(currentRing !== null){
+			if(checkForRingingTasks()){ 
+				ringingSettingsTasks();
+			}
+		}
+		if(currentRing === null && ringLimit > 0){
+			ringLimit = 0;
+			increaseVol = 0;
+		}
+	};
+	
+	const listInstanceController = function(obj){ 
+				console.log(obj, "top of listInstance controller", Object.assign({},listInstance.head()))
+		if('time' in obj){
 			const node = listInstance.traverseNextPathForSerialValue(obj.serial);
 			
 			if(node){
-				node.data = JSON.stringify(obj);
-				node.power = obj.power === "on";
-				node.snooze = obj.snooze; 
-
-				checkCurrentRing(node.serial);
+				const nodeData = JSON.parse(node.data);
+				const repeatStatus = nodeData.repeat === true && obj.repeat === false;
 				
-				if(node.timestamp < Date.now()/1000 && !node.snooze){ 
+				if(repeatStatus && node.power === true){
 					node.timestamp = buildTimeStamp(obj['time'].slice());
 				}
+				
+				node.data = JSON.stringify(obj);
+				node.power = obj.power === "on";
+				node.snooze = obj.snooze;  
+				
+				checkCurrentRing(node.serial);
+				
+				listInstance.manageSetRepeat(node);
 			}
 			else {
-				listInstance.addNextPath(buildTimeStamp(obj['time'].slice()), obj);
+				listInstance.addNextPath(
+					buildTimeStamp(obj['time'].slice()), 
+					obj
+				);
 			}
 		}
-		else if(hasProp(obj, "REMOVE")){
+		else if('silence' in obj){		
+			alarmSettingsObj = Object.assign(
+				{ }, 
+				alarmSettingsObj, 
+				obj,
+				{ "for-increase": setForIncrease(obj['alarm-vol']) }
+			);
+			return;
+		}	
+		else if("REMOVE" in obj){
 			listInstance.removeNextPathAt(obj["REMOVE"]);	
 		}
-		else if(hasProp(obj, "REPLACE")){
+		else if("REPLACE" in obj){ 
 			const node = listInstance.traverseNextPathForSerialValue(obj['REPLACE'].serial);
+			console.log(node, "node")
 			if(node){
 				node.data = JSON.stringify(obj["REPLACE"]); 
+				node.power = true;	//TEST
 				node.timestamp = buildTimeStamp(obj["REPLACE"]["time"].slice());	
 			}
 		}
-		else if(hasProp(obj, "DISMISS")){			
+		else if("DISMISS" in obj){	
 			const node = listInstance.traverseNextPathForSerialValue(obj['DISMISS']);
+			
 			if(node){
+				node.data = listInstance.nodeDismissToFalse(node.data);
 				listInstance.generateNewTimestamp(node);
 				checkCurrentRing(node.serial);
 			}
 		}
-		else if(hasProp(obj, "RINGING_ENDED")){		
-			const node = listInstance.traverseNextPathForSerialValue(obj["RINGING_ENDED"].serial);
-			console.log("RINGING ENDED, WORKER!")
+		else if("RINGING_ENDED" in obj){		
+			const node = listInstance.traverseNextPathForSerialValue(obj["RINGING_ENDED"].serial);	
+			
 			if(node){
-				checkCurrentRing(node.serial)
+				checkCurrentRing(node.serial);
 				listInstance.generateNewTimestamp(node);
 			}
 		}			
@@ -401,15 +537,15 @@ const alarmWorkerScript = function(){
 		return Boolean(length && power); 
 	};
 	
-	const clearInt = () => {									
+	const clearInt = function(){									
 		self.clearInterval(interval);
 		interval = null;
 	};
 	
-	const director = (stringed) => {
+	const director = function(stringed){
 		list = JSON.parse(stringed);
 		listInstanceController(list);
-			
+		
 		if(alarmPowerCheck() === true){
 			if(typeof interval !== "number"){
 				timeTracker();
@@ -420,46 +556,45 @@ const alarmWorkerScript = function(){
 		}
 	};
 	
-	const simultaneousRinging = (arr, mess) => {		//console.log(arr, mess, "top of simultaneousRinging")
-		arr.map((item,i) => {
+	const simultaneousRinging = function(arr, mess){
+		arr.forEach((item, i) => {
 			if(i === 0 && mess){
 				returnMessage(item);
-				currentRing = item.serial;				//console.log("simultaneousRinging, if: currentRing = ", item.serial)
+				currentRing = item.serial;
 			}
-			else {							//console.log("simultaneousRinging, else, generated new timestamp")
+			else {							
 				listInstance.generateNewTimestamp(arr[i]);
 			}
 		});
 	};		
 	
-	const timeTracker = () => {
+	const timeTracker = function(){
 		interval = self.setInterval(
-			function(){
+			function(){ 
 				stamp = Date.now();
 				
-				let matchNode = listInstance.traverseNextPathForStampValue(stamp / 1000);
-				let dismissNodes = listInstance.traverseNextPathForDismissArray(stamp / 1000); 
+				const matchNode = listInstance.traverseNextPathForStampValue(stamp / 1000);
+				const dismissNodes = listInstance.traverseNextPathForDismissArray(stamp / 1000); 
 				
-				if(matchNode && currentRing === null){
-					simultaneousRinging(matchNode, true)
-				}
-				else if(matchNode && currentRing !== null){
-					simultaneousRinging(matchNode, false)
+				if(matchNode){						console.log(matchNode, "MATCHNODE, RINGING")
+					const isNull = currentRing === null;
+					simultaneousRinging(matchNode, isNull);
 				}
 				
+				ringingTasksDirector(); 
 				
 				if(dismissNodes){	
 					returnMessage({
 						"DISMISS": dismissNodes 
 					});
 				}	
-				if(!listInstance.size()){ 	
+				if(listInstance.isEmpty()){ 	
 					clearInt();
 				}
 		}, 1000); 
 	}
 	
-	self.addEventListener("message", (e) => {	
+	self.addEventListener("message", function(e){	
 		director(e.data);
 	});
 };

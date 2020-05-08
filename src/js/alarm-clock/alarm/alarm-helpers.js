@@ -42,7 +42,7 @@ const getCorrectedIVar = (repeatDays, almtime, index) => {
 	return index;
 };
 
-const getSnoozeTime = (timeArray, snooze) => {
+const getSnoozeTime = (timeArray, snooze, snoozeD) => {
 	const base = new Date(snooze * 1000);
 
 	let min = base.getMinutes(),
@@ -52,7 +52,7 @@ const getSnoozeTime = (timeArray, snooze) => {
 		diff = (min + 60) - timeArray[1];
 	}
 	
-	timeArray[1] += diff + 10;
+	timeArray[1] += diff + snoozeD;
 	
 	if(timeArray[1] > 59){
 		timeArray[1] -= 60;
@@ -72,7 +72,26 @@ const getSnoozeTime = (timeArray, snooze) => {
 	return timeArray;
 };
 
-export const alarmDaysLabel = (alrmObj, fromClock) => { 
+export const displayWeekStart = (startNum, arr) => {
+	if(startNum === 1){
+		if(arr[0] === "Sun"){
+			return arr.slice(1).concat([ arr[0] ]);
+		}
+	}
+	if(startNum === 2){
+		if(arr[arr.length-1] === "Sat"){
+			return [ 
+				arr[arr.length-1] 
+			]
+			.concat(
+				arr.slice(0, arr.length-1)
+			);
+		}
+	}
+	return arr;
+};
+
+export const alarmDaysLabel = (alrmObj, fromClock, weekStart, snoozeDuration) => { 
 	const repeat = alrmObj.repeat,
 		  repeatDays = alrmObj['repeat-days'],
 		  time = alrmObj.time.slice();
@@ -80,20 +99,25 @@ export const alarmDaysLabel = (alrmObj, fromClock) => {
 	let snoozeLabel = "";	
 	
 	if(alrmObj.snooze !== null && fromClock){
-		snoozeLabel = getSnoozeTime(time, alrmObj.snooze);
-		snoozeLabel = ` snoozing until ${ snoozeLabel[0] }:${ snoozeLabel[1] } ${ snoozeLabel[2] }`
+		snoozeLabel = getSnoozeTime(time, alrmObj.snooze, snoozeDuration);
+		
+		if(snoozeLabel[1].toString().length === 1){		
+			snoozeLabel[1] = `0${ snoozeLabel[1] }`;
+		}		
+		
+		snoozeLabel = ` snoozing until ${ snoozeLabel[0] }:${ snoozeLabel[1] } ${ snoozeLabel[2] }`;
 	}
 	if(repeat === false){
 		const now = getTime();
 		const tomorrowCheck = checkForTomorrow(time.slice(), now);
 		
-		const notActive = alrmObj.snooze === null && alrmObj.ringing === false
+		const notActive = alrmObj.snooze === null && alrmObj.ringing === false;
 		
 		if(tomorrowCheck === "Tomorrow" && notActive){ 
 			return tomorrowCheck;
 		}
 		else {
-			return "Today" + snoozeLabel;
+			return `Today${ snoozeLabel }`;
 		}
 	}
 	else {
@@ -112,11 +136,15 @@ export const alarmDaysLabel = (alrmObj, fromClock) => {
 		}
 		
 		for(; i < repeatDays.length; i++){
-			label.push(days[repeatDays[i]]);
+			label.push(days[repeatDays[i]]);	
 			
 			if(fromClock === true){	
 				break;
-			}	
+			}
+		}
+		
+		if(weekStart !== 0 && fromClock === false){
+			label = displayWeekStart(weekStart, label);
 		}
 		
 		return label.join(", ") + snoozeLabel;
@@ -140,8 +168,15 @@ export const checkForDismissOnReplaceCase = (replaceTime) => {
 		}
 	} 
 	else if(mRTime[0] === now[0]){
-		return mRTime[1] - now[0] <= 10;
+		return mRTime[1] - now[1] <= 10;
 	}
 	return false;
 };
 
+export const checkForDismissOnRepeatDaysChange = function(repdays, alarm){	console.log("hit checkForDismissOnRepeatDaysChange")
+	const today = new Date().getDay();
+	
+	if(repdays.indexOf(today) === -1){			console.log("HIT FOR DISMISS END!")
+		alarm['dismiss'] = false;
+	}
+};

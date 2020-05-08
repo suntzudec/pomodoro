@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ReactFCCtest from 'react-fcctest'; 
 
@@ -16,7 +16,7 @@ class AppPomodoro extends React.PureComponent {
 		
 		this.time = time;
 		this.classes = [ "fa-pause", "fa-play" ];
-		this.devMode = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+		this.devMode = false////!process.env.NODE_ENV || process.env.NODE_ENV === "development";
 	}
 	
 	componentDidMount(){
@@ -68,8 +68,7 @@ class AppPomodoro extends React.PureComponent {
 	}
 	
 	componentWillUnmount(){
-		time = this.time;
-		//this.playSessionThruBreak("refresh");
+		time = this.time;		//this.playSessionThruBreak("refresh");
 	}
 	
     render(){
@@ -90,6 +89,10 @@ class AppPomodoro extends React.PureComponent {
 									 alarmList={ this.props.alarmList } 
 									 initRingingState={ this.props.initRingingState }
 									 initSnoozeState={ this.props.initSnoozeState }
+									 volume={ this.props.volume } 
+									 volChange={ this.props.volChange }	
+									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
+									 increaseVolBool={ this.props.increaseVolBool }	
 							/>
 						:
 							null
@@ -138,8 +141,7 @@ class AppPomodoro extends React.PureComponent {
 					/>
 				</div>	
 				
-				<div id="controls-cont" 
-					 className="negative">
+				<div id="controls-cont" className="negative">
 					<div id="controls">
 						<span id="start_stop"
 							  ref={ (elem) => this.start_stop = elem } 

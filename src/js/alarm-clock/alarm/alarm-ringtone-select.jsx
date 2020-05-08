@@ -29,7 +29,6 @@ const AlarmRingtoneSelect = (props) => {
 									   defaultChecked={ i === props.alarmObj['ringtone'] }
 									   onChange={ () => ringindex = i }
 								/>
-								
 								<label htmlFor={ `rtone${ i }-radio` }>
 									{ rtone["name"] }
 								</label>

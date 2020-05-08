@@ -1,5 +1,5 @@
 import * as types from './action-types.js';
-import { State, StateCopy } from '../../state.js';
+import { State, StateCopy } from '../../state.js'; //changed
 
 const pomodoroReducer = (state = State['pomodoro'], action) => {
 	const timeManager = (timer) => {

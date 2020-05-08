@@ -31,7 +31,7 @@ const getLapTime = (prevTime, curr) => {
 			}
 		}
 	}
-	console.log(curr, "curr nums")
+	
 	return curr;
 };
 

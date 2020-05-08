@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 	
 import maintObj from './time-maintenance.js';
-import assembleTimeData from  './world-clock/process-time-data.js'; 
+import { assembleTimeData } from  './world-clock/process-time-data.js'; 
 
 import ClockHeading from './main-clock/clock-heading.jsx';
 import CheckBox from './world-clock/checkbox.jsx'  
@@ -81,6 +81,10 @@ class AppClock extends React.PureComponent {
 									 alarmList={ this.props.alarmList } 
 									 initRingingState={ this.props.initRingingState }
 									 initSnoozeState={ this.props.initSnoozeState }
+									 volume={ this.props.volume } 
+									 volChange={ this.props.volChange }	//TEST
+									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
+									 increaseVolBool={ this.props.increaseVolBool }	//TEST
 							/>
 						:
 							null
@@ -90,7 +94,10 @@ class AppClock extends React.PureComponent {
 						<ClockHeading localList={ this.parsedList } 			
 									  time={ this.props.time }
 									  update={ this.props.update }
-									  alarm_present={ this.props.alarm_present }	
+									  alarm_present={ this.props.alarm_present }
+									  homeDisplay={ this.props.homeDisplay } 
+									  homeIndex={ this.props.homeIndex }
+									  snoozeDuration={ +this.props.snoozeDuration }	
 						/>
 					:
 						<ul id="clock-list">

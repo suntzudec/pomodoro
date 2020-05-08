@@ -19,7 +19,8 @@ export const State = {
 		'alarmEditIndex': null,
 		'alarmListIndexChanged': null,
 		'alarm_present': null, 
-		'isRinging': null
+		'isRinging': null,
+		'vol-change': 0 
 	},
 	
 	'clock': { 
@@ -39,17 +40,15 @@ export const State = {
 		'indices': {
 			'home': -1,
 			'alarm': 0,
-			'timers': 0,
 			'silence': 3,
 			'week-start': 0
 		},
 		'select': {
 			'home': false,
 			'alarm': false,
-			'timers': false,
 			'silence': false,
 			'snooze': false,
-			'increase-vol': false,
+			'increase-vol': false, 
 			'alarm-vol': false,
 			'week-start': false
 		},
@@ -57,7 +56,7 @@ export const State = {
 		'prev-hash': '#/pomodoro-clock',
 		'values': {
 			'snooze': '5',
-			'increase-vol': '60',
+			'increase-vol': '30', 
 			'alarm-vol': '50'
 		},
 		'increase-vol': true
@@ -65,3 +64,4 @@ export const State = {
 };
 
 export const StateCopy = JSON.parse(JSON.stringify(State['pomodoro']));
+export default State;

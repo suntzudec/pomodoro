@@ -33,10 +33,6 @@ const clockReducer = (state = State['clock'], action) => {
 			
 			break;
 			
-		case types.CALL_FLAG:
-			state['call'] = !state['call'];
-			break;
-			
 		default:
 			return state;	
 		

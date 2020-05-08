@@ -1,14 +1,17 @@
 import React from 'react';
 
-const Range = (props) => {       /* TEST for github directory master */
+import { rangeUnit } from '../display/select-functions.js';
+
+const Range = (props) => {       
 	return (
-		<div id="carousel-cont" className="range">
+		<div id="carousel-cont" 
+			 className="range">
 			<div id="value-col">
 				<h2 id="value">
 					{ props.value }
 					<br />
 					<span>
-						{ ` ${ props.unit }` }
+						{ ` ${ rangeUnit(props.value, props.unit) }` }
 					</span>
 				</h2>
 			</div>

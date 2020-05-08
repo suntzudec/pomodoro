@@ -5,12 +5,12 @@ import { changeToMin, changeMoveToMin, removeAlarm, addAlarm,
 		 selectRingTone, setAlarmChange, updateCurrentAlarm, 
 		 listPowerChangeState, changeBooleanListProps, listLabelChangeState,
 		 selectRepeatDays, editAlarmTime, setAlarmEdit, initRinging, 
-		 setAlarmPresent, setDismiss, initSnooze, isRingingChange } from './action-creators.js';
+		 setAlarmPresent, setDismiss, initSnooze, 
+		 isRingingChange, ringingVolumeChange, indexToNull } from './action-creators.js';
 		 
-		 
-import { AppAlarmClock } from '../app-alarm-clock.jsx';
+import AppAlarmClock from '../app-alarm-clock.jsx';
 
-import { recordPrevHash } from '../../settings/redux/action-creators.js'; //TEST
+import { recordPrevHash } from '../../settings/redux/action-creators.js'; 
 
 const mapDispatchToProps = (dispatch) => ({
 	toMinState: (value) => dispatch(changeToMin(value)),
@@ -30,9 +30,10 @@ const mapDispatchToProps = (dispatch) => ({
 	setAlarmPresentState: (index) => dispatch(setAlarmPresent(index)), 
 	setDismissState: (index, bool) => dispatch(setDismiss(index, bool)), 
 	initSnoozeState: (index) => dispatch(initSnooze(index)), 
+	indexToNullState: () => dispatch(indexToNull()),
 	
-	
-	recordPrevHashState: (hash) => dispatch(recordPrevHash(hash))	//TEST
+	ringingVolumeChangeState: (value) => dispatch(ringingVolumeChange(value)), 
+	recordPrevHashState: (hash) => dispatch(recordPrevHash(hash))	
 });
 
 const mapStateToProps = (state) => {
@@ -44,7 +45,17 @@ const mapStateToProps = (state) => {
 		toMin: state['alarmClockReducer']['toMin'],
 		moveToMin: state['alarmClockReducer']['moveToMin'],
 		alarmListIndexChanged: state['alarmClockReducer']['alarmListIndexChanged'], 
-		isRinging: state['alarmClockReducer']['isRinging'] 
+		isRinging: state['alarmClockReducer']['isRinging'],
+		volChange: state['alarmClockReducer']['vol-change'],			
+		
+		defRingtone: state['settingsReducer']['indices']['alarm'], 
+		volume: state['settingsReducer']['values']['alarm-vol'],
+		snoozeDuration: state['settingsReducer']['values']['snooze'],
+		
+		increaseVol: state['settingsReducer']['values']['increase-vol'], 
+		silenceAfter: state['settingsReducer']['indices']['silence'], 
+		increaseVolBool: state['settingsReducer']['increase-vol'],
+		weekStart: state['settingsReducer']['indices']['week-start'] 	
 	};
 };
 

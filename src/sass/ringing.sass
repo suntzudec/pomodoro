@@ -1,5 +1,5 @@
 body
-	main
+	#app
 		#routing-container
 			div
 				.box-shadow
@@ -8,28 +8,29 @@ body
 					-webkit-box-shadow: 0.5px 1.2px 2px 0.9px #111111
 					-o-box-shadow: 0.5px 1.2px 2px 0.9px #111111
 					-ms-box-shadow: 0.5px 1.2px 2px 0.9px #111111
-					
+				
 				.ringing-comp
 					width: 100%
-					height: 22.5%
+					max-width: 600px
+					height: 27.5%
 					background: #333333
-					
 					margin: 0 auto
 					position: absolute
 					right: 0
 					left: 0
+					top: 0
 					z-index: 9999
-					border: 0.5px outset #111111
+					border: 0.5px outset #222222
 					animation: ringing-comp-animation 2.5s steps(5, start) infinite
 					-webkit-animation: ringing-comp-animation 2.5s steps(5, start) infinite
 					
 					button
 						background: transparent
 						color: #ffffff
-						border: 0.75px solid #ffffff
+						border: 0.5px outset #ffffff
 						text-shadow: 0.75px 0.8px 1.2px #000000
 						font-size: 4vw
-						font-weight: 900
+						font-weight: 300
 						opacity: 0.75
 						padding: 1.5%
 						border-radius: 7.5%
@@ -147,12 +148,23 @@ body
 					100%
 						filter: brightness(100%)	
 
-@media (max-device-width: 770px) and (orientation: portrait)
+@media (max-width: 770px) and (orientation: portrait)
 	body
-		main
+		#app
 			#routing-container
 				div
 					.ringing-comp
 						button
 							font-size: 6vw
 							 padding: 2.5%
+							 
+@media (orientation: landscape)
+	body
+		#app
+			#routing-container
+				div
+					.ringing-comp
+						width: 50%
+						
+						button
+							font-size: 2vw

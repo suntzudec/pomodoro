@@ -26,13 +26,12 @@ import apiCallWorkerHandler from './workers/web/api-call-worker.js';
 import settingsReducer from './settings/redux/reducer.js';
 import AppSettingsConnect from './settings/redux/container.js';
 
-
 const reducers = combineReducers({
 	clockReducer,
 	pomodoroReducer,
 	alarmClockReducer,
 	stopWatchReducer,
-	settingsReducer //TEST
+	settingsReducer 
 });
 
 const store = createStore(reducers);
@@ -47,7 +46,7 @@ if(typeofWorker === true){
 if(SWCondition === true){
 	initSW();
 } 
-
+		//TEST tablet portrait --- larger font size for navbar spans
 const Routing = () => (
 	<React.StrictMode>
 		<Router>

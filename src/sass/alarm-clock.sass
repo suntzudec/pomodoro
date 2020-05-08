@@ -19,7 +19,7 @@ body
 			-ms-box-shadow: 0.5px 1.4px 1.75px 0.8px #111
 			
 		#new-alarm
-			color: #fff
+			color: #ffffff
 			border: none
 			font-weight: 900 
 			font-size: 15vw
@@ -141,7 +141,7 @@ body
 			
 			li.alarm
 				padding: 0.6em 1.1em 1em
-				height: 33vw
+				height: 34vw
 				border-bottom: 0.5px outset #ffffff
 			
 				.opacity
@@ -168,9 +168,7 @@ body
 						padding: 2.25%
 						font-size: 3.5vw
 						border: 2px solid #fff
-						color: #fff
 						font-weight: 900
-						
 						float: right
 						position: relative
 						background: #222
@@ -251,9 +249,7 @@ body
 						padding: 2.25%
 						font-size: 3.5vw
 						border: 2px solid #fff
-						color: #fff
 						font-weight: 900
-						
 						text-align: center
 						float: right
 						position: relative
@@ -483,8 +479,8 @@ body
 								border-left: 0
 								border-right: 0
 								border-top: 0
-								border-bottom: 3px solid
-								padding: 5px
+								border-bottom: 1px solid
+								padding: 3.5px
 								margin: 0 auto
 								
 					.collapse-div
@@ -494,8 +490,8 @@ body
 						margin: 6.75% 6% 0 
 						line-height: 1.1
 						
-						span.fa-trash
-							line-height: 1.8
+						span
+							line-height: 1.4
 						
 						span:active
 							position: relative
@@ -561,7 +557,7 @@ body
 						padding: 0 10%
 						text-align: left
 						margin: 0 0% 0 70%
-						line-height: 2
+						line-height: 1.75
 						
 						&:active
 							position: relative
@@ -570,7 +566,7 @@ body
 						.expand:hover
 							cursor: pointer
 							
-@media (max-device-width: 499px) 
+@media (max-width: 499px) 
 	body
 		#alarm-clock-container
 			#set-alarm-container
@@ -700,11 +696,12 @@ body
 									font-size: 4.5vw
 									
 						.collapse-div
-							span.fa-trash
+							span
 								font-size: 4.5vw
-								line-height: 2.8								
+								line-height: 2.9							
 						
 						.click
+							line-height: 2
 							
 							.expand
 								font-size: 11vw
@@ -724,7 +721,7 @@ body
 				li.fold	
 					height: auto
 					
-@media (max-device-width: 379px) 				
+@media (max-width: 379px) 				
 	body
 		#alarm-clock-container
 			#set-alarm-container
@@ -763,6 +760,8 @@ body
 								input
 									width: 1.9vw
 									height: 1.9vw
+									position: relative
+									top: 2px
 							
 							.label
 								label
@@ -778,6 +777,10 @@ body
 									
 								span
 									font-size: 5.25vw
+									
+						.collapse-div
+							line-height: 2.6
+						
 						
 				li.fold
 					height: auto
@@ -806,6 +809,7 @@ body
 						
 						.collapse-div
 							margin: 3.25% 6% 0
+							line-height: 2.2
 							
 						.click
 							line-height: 1.5

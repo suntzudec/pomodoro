@@ -8,14 +8,16 @@ const initSW = function(){
 					register.onupdatefound = function(){
 						if(navigator.serviceWorker.controller){
 							const installingWorker = register.installing;
+							
 							installingWorker.onstatechange = function(){
-								
 								switch(installingWorker.state){
 									case 'installed':
-									break;
+										break;
 									
 									case 'redundant':
-									throw new Error('The installing service worker became redundant.');
+										throw new Error(
+											'The installing service worker became redundant.'
+										);
 									
 									default:
 								 }

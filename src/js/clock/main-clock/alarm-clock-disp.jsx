@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { alarmDaysLabel } from '../../alarm-clock/alarm/alarm-helpers.js';
 
 const format_alarm_present = (alarm_present) => {
@@ -10,12 +11,20 @@ const format_alarm_present = (alarm_present) => {
 };
 
 const Alarm_Clock_Disp = (props) => {
-	return (
-		<h3 id="alarm_pres">
-			{ format_alarm_present(props.alarm_present['time']) }&#32;{ alarmDaysLabel(props.alarm_present, true) }
-			<span className="fas fa-bell" />
-		</h3>
-	);
+	return props.alarm_present.power === "on" ? (
+			<h3 id="alarm_pres">
+				{ format_alarm_present(props.alarm_present['time']) }&#32;{ 
+					alarmDaysLabel(
+						props.alarm_present, 
+						true, 
+						null, 
+						props.snoozeDuration
+					) }
+				<span className="fas fa-bell" />
+			</h3>
+	) 
+		: 
+			null
 };
 
 export default Alarm_Clock_Disp;

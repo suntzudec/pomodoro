@@ -1,9 +1,9 @@
-const SWWorkerScript = () => {
+const SWWorkerScript = function(){
 	let parsed; 
 	let interval = null;
 	let allow = false;
 	
-	const runSWValues = (parse) => {
+	const runSWValues = function(parse){
 		parsed = parse;
 		allow = parsed.allow;
 
@@ -17,7 +17,7 @@ const SWWorkerScript = () => {
 		}, 10);
 	};
 	
-	const updateTime = () => {
+	const updateTime = function(){
 		parsed.time[2]++;
 		
 		if(parsed.time[2] === 100){
@@ -33,14 +33,14 @@ const SWWorkerScript = () => {
 		self.postMessage(JSON.stringify(parsed));
 	};
 	
-	const end = () => {
+	const end = function(){
 		self.clearInterval(interval);
 		interval = null;
 		parsed = null;
 		allow = false;
 	};
 	
-	self.addEventListener("message", (e) => {
+	self.addEventListener("message", function(e){
 		if(e.data === "stop"){
 			return end();
 		}

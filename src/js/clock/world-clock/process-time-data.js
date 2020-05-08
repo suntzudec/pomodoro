@@ -1,15 +1,15 @@
+import React from 'react';
+
+import maintObj from '../time-maintenance.js'; 
+import { formatSelectedList, days } from '../main-clock/format-clock-heading.js';
+
 const getZoneTimeFromOffset = (offset) => {
 	const correctedStamp = (Date.now() / 1000) + offset;
 	const localOffset = new Date().getTimezoneOffset() * 60;
 	return (correctedStamp + localOffset) * 1000;
 };
 
-const assembleTimeData = (zone) => {
-	const days = [ 
-		"Sunday", "Monday", "Tuesday", "Wednesday", 
-		"Thursday", "Friday", "Saturday" 
-	];
-	
+export const assembleTimeData = (zone) => {
 	const zoneCorrect = getZoneTimeFromOffset(zone.gmtOffset), 
 		zoneTime = new Date(zoneCorrect),
 		zoneName = zone.zoneName.split("/");
@@ -27,11 +27,14 @@ const assembleTimeData = (zone) => {
 	const getLocal = () => {
 		let local = zoneName[zoneName.length-1];
 		
-		if(local !== zone.countryName){
-			local += ", " + zone.countryName;
-		}
+		if(zone.countryName){
+			if(local !== zone.countryName){
+				local += `, ${ zone.countryName }`;
+			}
+		}	
+		
 		return local.replace(/\_/g, " ");
-	}
+	};
 	
 	const day = days[+zoneTime.getDay()], 
 		date = `${ dateMonth}/${ dateDay}/${ dateYear}`,
@@ -43,4 +46,32 @@ const assembleTimeData = (zone) => {
 	]; 
 };
 
-export default assembleTimeData;
+const renderHomeClock = (offset) => {
+	const zone = assembleTimeData(
+		{
+			gmtOffset: offset * 60 * 60,
+			zoneName: 'Home'
+		}
+	);
+	
+	return formatSelectedList(zone, "home");
+};
+
+export const homeDisplayConditions = (homeDisplay, homeIndex) => {
+	if(homeDisplay === false){
+		return null;
+	}
+	
+	if(homeIndex === -1){
+		homeIndex = maintObj.getGeneral('homeTimezone');
+	}
+	
+	const homeOffset = maintObj.getGeneral('zonesAndGMT')[homeIndex];
+	const localOffset = new Date().getTimezoneOffset() / -60;
+	
+	if(homeOffset[1] !== localOffset){
+		return renderHomeClock(homeOffset[1]);
+	}
+	
+	return null;
+};

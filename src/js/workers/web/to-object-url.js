@@ -8,7 +8,10 @@ const codeToObjectURL = (block) => {
 			{ type: "application/javascript" }
 		);
 	
-	return new Worker(URL.createObjectURL(blob)); 
+	return new Worker(
+		URL.createObjectURL(blob), 
+		{ type: 'module' }
+	); 
 };
 
 export default codeToObjectURL; 
