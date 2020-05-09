@@ -173,10 +173,10 @@ export const checkForDismissOnReplaceCase = (replaceTime) => {
 	return false;
 };
 
-export const checkForDismissOnRepeatDaysChange = function(repdays, alarm){	console.log("hit checkForDismissOnRepeatDaysChange")
+export const checkForDismissOnRepeatDaysChange = function(repdays, alarm){	
 	const today = new Date().getDay();
 	
-	if(repdays.indexOf(today) === -1){			console.log("HIT FOR DISMISS END!")
+	if(repdays.indexOf(today) === -1){			
 		alarm['dismiss'] = false;
 	}
 };

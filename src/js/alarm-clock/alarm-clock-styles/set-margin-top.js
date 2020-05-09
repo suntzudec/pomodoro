@@ -1,0 +1,1 @@
+export const setMarginTop = () => `${ document.getElementById("alarm-ul").scrollTop }px`;

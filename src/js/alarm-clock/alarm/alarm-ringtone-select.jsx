@@ -1,6 +1,8 @@
 import React from 'react';
 import ringtoneArray from './ringtone-array.js';
 
+import { setMarginTop } from '../alarm-clock-styles/set-margin-top.js';
+
 const AlarmRingtoneSelect = (props) => {
 	
 	let ringindex = props.alarmObj['ringtone'];
@@ -13,7 +15,8 @@ const AlarmRingtoneSelect = (props) => {
 	};
 		
 	return (
-		<div id="ringtone-cont">
+		<div id="ringtone-cont"
+			 style={{ marginTop: setMarginTop() }}>
 			<span id="ringtone-x"
 				  onMouseUp={ () => props.booleanPropsChange(props.i, 'ringtoneSelect') }>
 				{ "X" }

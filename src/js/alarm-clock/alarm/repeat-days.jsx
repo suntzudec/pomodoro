@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { days } from '../../clock/main-clock/format-clock-heading.js';
+import { setMarginTop } from '../alarm-clock-styles/set-margin-top.js';
 
 const adjustWeekIndex = (wk_strt, ind) => {
 	let i = ind;
@@ -36,9 +37,12 @@ const repeatDisplayWeekStart = (startNum, arr) => {
 	return arr;
 };
 
+
+
 const RepeatDays = (props) => {
 	return (
-		<div className="repeat-days-div">
+		<div className="repeat-days-div"
+			 style={{ marginTop: setMarginTop() }}>
 			<ul className="repeat-days-ul">
 				{
 					repeatDisplayWeekStart(props.weekStart, days).map((day, i) => {
