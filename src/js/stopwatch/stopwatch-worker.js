@@ -30,7 +30,9 @@ const SWWorkerScript = function(){
 			}
 		}
 		
-		self.postMessage(JSON.stringify(parsed));
+		self.postMessage(
+			JSON.stringify(parsed)
+		);
 	};
 	
 	const end = function(){
@@ -45,7 +47,9 @@ const SWWorkerScript = function(){
 			return end();
 		}
 		
-		runSWValues(JSON.parse(e.data));
+		runSWValues(
+			JSON.parse(e.data)
+		);
 	});
 };
 

@@ -44,7 +44,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 		
-		case types.DISMISS:							console.log("DISMISS " + action.bool)
+		case types.DISMISS:							
 			state['alarm-list'][action.index]['dismiss'] = action.bool;
 			
 			if(!action.bool){
@@ -60,12 +60,12 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 		
-		case types.ALARM_PRESENT:							console.log("ALARM_PRESENT", action.index)
+		case types.ALARM_PRESENT:							
 			state['alarm_present'] = state['alarm-list'][action.index] || null;
 			
 			break;
 		
-		case types.ADDALARM: 								console.log("ADDALARM")
+		case types.ADDALARM: 								
 			action.obj['time'] = state['current-alarm'].slice(); 
 			state['alarm-list'] = [ 
 				...state['alarm-list'], 
@@ -78,7 +78,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break; 
 		
-		case types.EDITALARMTIME:  							console.log("EDITALARMTIME")
+		case types.EDITALARMTIME:  							
 			if(typeof state['alarmEditIndex'] === "number"){
 				const i = state['alarmEditIndex'];
 				
@@ -97,7 +97,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;  
 			
-		case types.SETALARMEDIT: 							console.log("SETALARMEDIT")
+		case types.SETALARMEDIT: 							
 			state['alarmEditIndex'] = action.value;
 			
 			if(typeof action.value === "number"){
@@ -107,7 +107,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 		
 			break;
 		 
-		case types.REPEATDAYS: 								console.log("REPEATDAYS")
+		case types.REPEATDAYS: 								
 			let repeatDays = state['alarm-list'][action.index]['repeat-days'];
 			let target = repeatDays.indexOf(action.liIndex);
 			
@@ -125,7 +125,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 				
 			break;
 
-		case types.LISTPOWERCHANGE: 							console.log("LISTPOWERCHANGE")
+		case types.LISTPOWERCHANGE: 							
 			state['alarm-list'][action.index]["power"] = action.value;
 			
 			const obj = state['alarm-list'][action.index];
@@ -141,7 +141,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 
-		case types.TOMIN: 										console.log("TOMIN")
+		case types.TOMIN: 										
 			state['toMin'] = typeof action.value === "boolean" ? 
 					action.value 
 				: 
@@ -149,7 +149,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 
-		case types.SETALARM: 								console.log("SETALARM")
+		case types.SETALARM: 								
 			state['setAlarm'] = !state['setAlarm'];
 			
 			if(state['setAlarm'] === false && typeof state['alarmEditIndex'] === "number"){
@@ -158,7 +158,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 
-		case types.REMOVEALARM: 								console.log("REMOVEALARM")
+		case types.REMOVEALARM: 								
 			const serial = state['alarm-list'][action.index].serial;
 			
 			state['alarm-list'] = state['alarm-list']
@@ -172,7 +172,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 
-		case types.MOVETOMIN: 									console.log("MOVETOMIN")
+		case types.MOVETOMIN: 									
 			state['moveToMin'] = typeof action.value === "boolean" ? 
 					action.value 
 				: 
@@ -180,12 +180,12 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 					
 			break;
 
-		case types.SELECTRINGTONE: 								console.log("SELECTRINGTONE")
+		case types.SELECTRINGTONE: 								
 			state['alarm-list'][action.liIndex]['ringtone'] = action.index;
 			
 			break;
 		
-		case types.BOOLEANLISTPROPS: 							console.log("BOOLEANLISTPROPS")
+		case types.BOOLEANLISTPROPS: 							
 			const excludedProps = [ 
 				"collapsed", 
 				"vibrate", 
@@ -217,17 +217,17 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break;
 			
-		case types.LABELCHANGE:									console.log("LABELCHANGE")
+		case types.LABELCHANGE:									
 			state['alarm-list'][action.index]['label'] = action.str; 
 			
 			break;
 		
-		case types.CURRENTALARM:								console.log("CURRENTALARM", action.index, action.value)
+		case types.CURRENTALARM:								
 			state['current-alarm'][action.index] = action.value; 
 			
 			break;
 			
-		case types.RINGING:										console.log("RINGING")
+		case types.RINGING:										
 			const indx = state['alarm-list'].findIndex(obj => obj.serial === action.serial),
 			      node = state['alarm-list'][indx];	
 				

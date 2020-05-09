@@ -38,7 +38,8 @@ const clockReducer = (state = State['clock'], action) => {
 		
 	};
 	return Object.assign(
-		{ }, state,
+		{ }, 
+		state,
 		state['indices']
 	); 
 };

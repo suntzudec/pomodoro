@@ -14,7 +14,7 @@ const alarmWorkerScript = function(){
 		const year = date.getFullYear();
 		const month = date.getMonth();
 		const day = date.getDate();
-		const base = listTime.slice(); //TEST
+		const base = listTime.slice(); 
 		const corrected = processTimeArr(base);	
 		const dateObj = new Date(year, month, day, corrected[0], corrected[1]); 
 		let newStamp = dateObj.getTime();
@@ -81,8 +81,10 @@ const alarmWorkerScript = function(){
 				while(currentNode.next){
 					currentNode = currentNode.next;
 				}
+				
 				currentNode.next = newNode;
 			}
+			
 			length++;
 		};
 		
@@ -231,6 +233,7 @@ const alarmWorkerScript = function(){
 			}
 			
 			let currentNode = head;
+			
 			while(serial !== currentNode.serial){
 				currentNode = currentNode.next;
 			}
@@ -308,7 +311,10 @@ const alarmWorkerScript = function(){
 				const stamp = this.setStampFromArguments(node.timestamp, millistamp);
 				const day = new Date(stamp).getDay(); 
 				const nextDay = calcDay(day);							
-				this.updateTimestamp([ day, nextDay ], node);
+				this.updateTimestamp(
+					[ day, nextDay ], 
+					node
+				);
 			}
 			else {												
 				returnMessage({ 
@@ -349,18 +355,36 @@ const alarmWorkerScript = function(){
 		this.manageSetRepeat = function(node){
 			const data = JSON.parse(node.data);
 			
-			if(this.buildTSForNoRepeat(node, data.repeat) && this.commonConditions(node.snooze, data.setRepeat)){ 
-				node.timestamp = buildTimeStamp(data['time']/*.slice()*/);
+			if(this.buildTSForNoRepeat(
+					node, 
+					data.repeat
+				) && this.commonConditions(
+					node.snooze, 
+					data.setRepeat
+				)
+			){ 
+				node.timestamp = buildTimeStamp(data['time']);
 			} 
 			
 			if(data.setRepeat === true){
 				setRepeat = true;
 			}
-			else if(this.buildTSForRepeat(setRepeat, data.repeat) && this.commonConditions(node.snooze, data.setRepeat)){
-				const initStamp = buildTimeStamp(data['time']/*.slice()*/);				
+			else if(this.buildTSForRepeat(
+						 setRepeat, 
+						 data.repeat
+					) && this.commonConditions(
+						 node.snooze, 
+						 data.setRepeat
+					)
+			){
+				const initStamp = buildTimeStamp(data['time']);				
 				node.timestamp = initStamp;			
 				
-				if(this.checkRepeatDaysForDay(data['repeat-days'], initStamp * 1000)){		
+				if(this.checkRepeatDaysForDay(
+						data['repeat-days'], 
+						initStamp * 1000
+					)
+				){		
 					this.generateNewTimestamp(node);
 				}
 				
@@ -458,7 +482,6 @@ const alarmWorkerScript = function(){
 	};
 	
 	const listInstanceController = function(obj){ 
-				console.log(obj, "top of listInstance controller", Object.assign({},listInstance.head()))
 		if('time' in obj){
 			const node = listInstance.traverseNextPathForSerialValue(obj.serial);
 			
@@ -467,7 +490,7 @@ const alarmWorkerScript = function(){
 				const repeatStatus = nodeData.repeat === true && obj.repeat === false;
 				
 				if(repeatStatus && node.power === true){
-					node.timestamp = buildTimeStamp(obj['time']/*.slice()*/);
+					node.timestamp = buildTimeStamp(obj['time']);
 				}
 				
 				node.data = JSON.stringify(obj);
@@ -480,7 +503,7 @@ const alarmWorkerScript = function(){
 			}
 			else {
 				listInstance.addNextPath(
-					buildTimeStamp(obj['time']/*.slice()*/), 
+					buildTimeStamp(obj['time']), 
 					obj
 				);
 			}
@@ -499,11 +522,11 @@ const alarmWorkerScript = function(){
 		}
 		else if("REPLACE" in obj){ 
 			const node = listInstance.traverseNextPathForSerialValue(obj['REPLACE'].serial);
-			console.log(node, "node")
+			
 			if(node){
 				node.data = JSON.stringify(obj["REPLACE"]); 
-				node.power = true;	//TEST
-				node.timestamp = buildTimeStamp(obj["REPLACE"]["time"].slice());	
+				node.power = true;
+				node.timestamp = buildTimeStamp(obj["REPLACE"]["time"]);	
 			}
 		}
 		else if("DISMISS" in obj){	
@@ -523,7 +546,10 @@ const alarmWorkerScript = function(){
 				listInstance.generateNewTimestamp(node);
 			}
 		}			
-		compare_alarm_present(alarm_present, listInstance.getSerialByLowestStampValue());
+		compare_alarm_present(
+			alarm_present, 
+			listInstance.getSerialByLowestStampValue()
+		);
 	};
 	
 	const alarmPowerCheck = () => {
@@ -580,7 +606,10 @@ const alarmWorkerScript = function(){
 				
 				if(matchNode){					
 					const isNull = currentRing === null;
-					simultaneousRinging(matchNode, isNull);
+					simultaneousRinging(
+						matchNode, 
+						isNull
+					);
 				}
 				
 				ringingTasksDirector(); 

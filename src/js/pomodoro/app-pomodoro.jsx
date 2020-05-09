@@ -184,4 +184,3 @@ AppPomodoro.propTypes = {
 }
 
 export default AppPomodoro;
-

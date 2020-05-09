@@ -4,14 +4,6 @@ const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const WorkerPlugin = require('worker-plugin'); 
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin'); 
 const RobotsTxtWebpackPlugin = require('robotstxt-webpack-plugin');
-/* 
-const cmd = process.env.npm_lifecycle_event;
-
-let port = '5000/';
-
-if(cmd === "start"){
-	port = '8080/';
-} */
 
 module.exports = {    
     entry: [ 
@@ -28,7 +20,7 @@ module.exports = {
     output: {
         filename: 'js/main.js',
         path: path.resolve(__dirname, 'dist'),
-		publicPath: '/'//`http://localhost:${ port }`
+		publicPath: '/'
 	},
 	plugins: [
 		new HtmlWebpackPlugin({

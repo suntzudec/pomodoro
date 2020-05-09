@@ -55,7 +55,12 @@ const RepeatDays = (props) => {
 											props.i, 
 											adjustWeekIndex(props.weekStart, i)
 										) } 
-									   defaultChecked={ props.repeatDays.indexOf(adjustWeekIndex(props.weekStart, i)) >= 0 } 
+									   defaultChecked={ props.repeatDays.indexOf(
+											adjustWeekIndex(
+												props.weekStart, 
+												i
+											)
+										) >= 0 } 
 								/>
 								{ day }
 							</li>

@@ -22,7 +22,10 @@ const Range = (props) => {
 						   max={ props.max }
 						   step={ props.step } 
 						   defaultValue={ props.value } 
-						   onChange={ (e) => props.changeValueState(props.part, e.target.value) } 
+						   onChange={ (e) => props.changeValueState(
+								props.part, 
+								e.target.value
+							) } 
 					/>
 				</div>
 			</div>	

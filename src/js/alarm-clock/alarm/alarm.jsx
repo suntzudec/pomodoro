@@ -33,14 +33,14 @@ export default class Alarm extends React.PureComponent {
 	}
 	
 	powerChange(e){ 
-		e.persist(); 
+		//e.persist(); 
 		if(this.props.alarmObj['power'] !== e.target.value){
 			this.props.powerChangeState(this.props.i, e.target.value); 
 		}
 	}
 	
 	labelKeyUp(e){
-		e.persist()
+		//e.persist()
 		if(e.keyCode === 13){
 			return this.labelValue.length ? 
 					this.newLabel(e) 
@@ -58,14 +58,23 @@ export default class Alarm extends React.PureComponent {
 	
 	setRepeatHandler(e){
 		if(e.target.tagName === "LABEL"){
-			this.props.booleanPropsChange(this.props.i, 'setRepeat');
+			this.props.booleanPropsChange(
+				this.props.i, 
+				'setRepeat'
+			);
 			return;
 		}
 		if(e.target.checked === true){
-			this.props.booleanPropsChange(this.props.i, 'setRepeat');
+			this.props.booleanPropsChange(
+				this.props.i, 
+				'setRepeat'
+			);
 		}
 		
-		this.props.booleanPropsChange(this.props.i, 'repeat');
+		this.props.booleanPropsChange(
+			this.props.i, 
+			'repeat'
+		);
 	}
 	
 	render(){

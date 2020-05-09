@@ -18,7 +18,7 @@ const zonesAndGMT = (data) => {
 		let zone = item.zoneName.split("/").reverse();
 			zone[0] = zone[0].replace(/\_/g, " ")
 		return [ 
-				zone, 
+			zone, 
 			item.gmtOffset / 60 / 60 
 		];	
 	})

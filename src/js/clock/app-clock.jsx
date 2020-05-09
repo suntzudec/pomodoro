@@ -38,7 +38,6 @@ class AppClock extends React.PureComponent {
 	
 	componentWillUnmount(){
 		window.clearInterval(this.mainInterval);
-		
 	}
 	
 	parseMaintenanceObj(){ 						console.log("parseMaint")
@@ -82,9 +81,9 @@ class AppClock extends React.PureComponent {
 									 initRingingState={ this.props.initRingingState }
 									 initSnoozeState={ this.props.initSnoozeState }
 									 volume={ this.props.volume } 
-									 volChange={ this.props.volChange }	//TEST
+									 volChange={ this.props.volChange }	
 									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
-									 increaseVolBool={ this.props.increaseVolBool }	//TEST
+									 increaseVolBool={ this.props.increaseVolBool }	
 							/>
 						:
 							null

@@ -123,19 +123,15 @@ export default class AppAlarmClock extends React.PureComponent {
 			silence *= 60;
 		}
 		
-		//alarmWorker.postMessage(
-			//JSON.stringify(
-			this.postMessage(
-				{
-					'silence': silence,
-					'increase-vol': +this.props.increaseVol,
-					'increase-bool': this.props.increaseVolBool,
-					'snooze-duration': +this.props.snoozeDuration * 60,	
-					'alarm-vol': +this.props.volume
-				}
-			)
-			//)
-		//);
+		this.postMessage(
+			{
+				'silence': silence,
+				'increase-vol': +this.props.increaseVol,
+				'increase-bool': this.props.increaseVolBool,
+				'snooze-duration': +this.props.snoozeDuration * 60,	
+				'alarm-vol': +this.props.volume
+			}
+		);
 	}
 	
 	componentDidMount(){ 
@@ -160,10 +156,8 @@ export default class AppAlarmClock extends React.PureComponent {
 			
 			this.props.indexToNullState(); 
 			
-			/* alarmWorker */this.postMessage(
-				 //JSON.stringify(
-					item
-				//)
+			this.postMessage(
+				item
 			); 
 		}
 	}

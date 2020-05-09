@@ -49,7 +49,11 @@ const pomodoroReducer = (state = State['pomodoro'], action) => {
 			break;
 		
 		case types.REFRESH:
-			state = Object.assign({ }, StateCopy);
+			state = Object.assign(
+				{ }, 
+				StateCopy
+			);
+			
 			state['timer'] = StateCopy['timer'].slice();
 			break;
 			
@@ -75,7 +79,8 @@ const pomodoroReducer = (state = State['pomodoro'], action) => {
 	}
 	
 	return Object.assign(
-		{ }, state
+		{ }, 
+		state
 	);  
 }
 

@@ -41,7 +41,7 @@ export default class Ringing extends React.PureComponent {
 		
 	}
 	
-	componentWillUnmount(){ //refactor...
+	componentWillUnmount(){ 
 		this.props.ringingVolumeChange(0);
 		
 		if(this.type === true){
@@ -50,7 +50,6 @@ export default class Ringing extends React.PureComponent {
 				});
 		}
 		else if(window.location.hash !== "#/alarm-clock"){
-			//console.log(this.props.alarmList[this.props.isRinging], "KK")
 			this.postMessage(
 				this.props.alarmList[this.props.isRinging]
 			);
@@ -67,15 +66,13 @@ export default class Ringing extends React.PureComponent {
 	
 	volumeIncreaseHandler(){
 		if(this.props.increaseVolBool === true && this.ringtone.volume < 1.0){
-			
 			let preVol = (+this.props.volume / 100) + this.props.volChange;
-			//console.log(preVol, +this.props.volume / 100, this.props.volChange)
+			
 			if(preVol > 1){
 				preVol = 1;
 			}
 			
 			this.ringtone.volume = preVol;
-		//	console.log(this.ringtone.volume, "ringtone volume")
 		}
 	}
 	

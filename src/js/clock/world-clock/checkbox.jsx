@@ -19,7 +19,7 @@ const CheckBox = (props) => {
 		return indexBase;
 	};
 
-	const changeList = (idNumber, e) => {
+	const changeList = function(idNumber, e){
 		if(e.target.checked === true){ 
 			props.update(
 				"select", 

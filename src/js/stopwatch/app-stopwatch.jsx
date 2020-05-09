@@ -257,9 +257,9 @@ export default class AppStopWatch extends React.PureComponent {
 									 initRingingState={ this.props.initRingingState }
 									 initSnoozeState={ this.props.initSnoozeState }
 									 volume={ this.props.volume } 
-									 volChange={ this.props.volChange }	//TEST
+									 volChange={ this.props.volChange }	
 									 ringingVolumeChange={ this.props.ringingVolumeChangeState }
-									 increaseVolBool={ this.props.increaseVolBool }	//TEST
+									 increaseVolBool={ this.props.increaseVolBool }	
 							/>
 						:
 							null
@@ -274,27 +274,30 @@ export default class AppStopWatch extends React.PureComponent {
 							cy={ this.radius + 25 }
 					/>	
 					{
-						this.props.lapList.length && this.pathBool ? (
+						this.props.lapList.length && this.pathBool ? 
 							<path fill="transparent" 
 								  stroke="red" 
 								  strokeWidth="3.25"							  
-								  d={ this.revolution === false ? this.circlePath() : this.staticDProp }
+								  d={ this.revolution === false ?
+											this.circlePath() 
+										: 
+											this.staticDProp }
 							/> 
-						) : (
+						: 
 							null
-						)
+						
 					}
 					{
-						this.lapMarkerCoords.length ? (
+						this.lapMarkerCoords.length ? 
 							<LapMarker x1={ this.lapMarkerCoords[0] - 15 }
 									   x2={ this.lapMarkerCoords[0] + 15 }
 									   y1={ this.lapMarkerCoords[1] }
 									   y2={ this.lapMarkerCoords[1] }
 									   rotate={ this.rotate }
 							/>
-						) : (
+						: 
 							null
-						)
+						
 					}
 					<text className="opacity"
 						  fill="#ffffff"
@@ -306,16 +309,16 @@ export default class AppStopWatch extends React.PureComponent {
 						
 					</text> 
 					{
-						this.props.lapList.length ? (
+						this.props.lapList.length ? 
 							<circle id="red"
 									r="10"
 									cx={ this.calcCCoord(this.cos) } 
 									cy={ this.calcCCoord(this.sin) } 
 									fill="red"
 							/>
-						) : (
+						: 
 							null
-						)
+						
 					}
 				</svg>
 				

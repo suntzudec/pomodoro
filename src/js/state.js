@@ -64,4 +64,3 @@ export const State = {
 };
 
 export const StateCopy = JSON.parse(JSON.stringify(State['pomodoro']));
-export default State;

@@ -7,7 +7,7 @@ const AlarmRingtoneSelect = (props) => {
 	
 	let ringindex = props.alarmObj['ringtone'];
 	
-	const selectRingTone = () => {
+	const selectRingTone = function(){
 		if(ringindex > -1){
 			props.selectRingtoneState(ringindex, props.i);
 			props.booleanPropsChange(props.i, 'ringtoneSelect');

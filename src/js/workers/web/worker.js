@@ -45,7 +45,7 @@ const apiWorker = function(){
 			.catch(error => console.log("error: ", error));
 	};
 	
-	self.addEventListener('message', (e) => {
+	self.addEventListener('message', function(e){
 		if(e.data === "listing"){
 			getTimezoneList();
 		}

@@ -16,7 +16,7 @@ export const assembleTimeData = (zone) => {
 		
 	const hours = zoneTime.getHours(),
 		minutes = zoneTime.getMinutes(),
-		minutesCorrect = minutes.toString().length === 1 ? "0" + minutes : minutes,
+		minutesCorrect = minutes.toString().length === 1 ? `0${ minutes }` : minutes,
 		AorP = hours >= 12 ? "PM" : "AM",
 		hoursCorrect = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
 	
