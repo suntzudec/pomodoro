@@ -16,7 +16,7 @@ class AppPomodoro extends React.PureComponent {
 		
 		this.time = time;
 		this.classes = [ "fa-pause", "fa-play" ];
-		this.devMode = false////!process.env.NODE_ENV || process.env.NODE_ENV === "development";
+		this.devMode = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 	}
 	
 	componentDidMount(){
