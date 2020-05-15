@@ -27,7 +27,11 @@ const alarmWorkerScript = function(){
 	};
 	
 	const returnMessage = function(node){	
-		self.postMessage(JSON.stringify(node));
+		self.postMessage(
+			JSON.stringify(
+				node
+			)
+		);
 	};
 	
 	function LinkedList(){
@@ -486,6 +490,7 @@ const alarmWorkerScript = function(){
 			const node = listInstance.traverseNextPathForSerialValue(obj.serial);
 			
 			if(node){
+				
 				const nodeData = JSON.parse(node.data);
 				const repeatStatus = nodeData.repeat === true && obj.repeat === false;
 				

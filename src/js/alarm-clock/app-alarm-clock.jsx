@@ -76,7 +76,7 @@ export default class AppAlarmClock extends React.PureComponent {
 	
 	workerHandler(){
 		alarmWorker.onmessage = (message) => {
-			const obj = JSON.parse(message.data);							console.log(obj, "obj")
+			const obj = JSON.parse(message.data);							
 			if("VOL" in obj){
 				return this.props.ringingVolumeChangeState(0.1);
 			}
@@ -143,7 +143,7 @@ export default class AppAlarmClock extends React.PureComponent {
 		}
 	}
 	
-	componentDidUpdate(){				console.log("compdidupdate")
+	componentDidUpdate(){				
 		if(this.props.alarmListIndexChanged !== null){
 			let item;
 			

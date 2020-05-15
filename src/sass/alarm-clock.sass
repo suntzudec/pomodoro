@@ -308,6 +308,9 @@ body
 					.dismiss
 						animation: dismiss-animation 1.5s steps(5, start) infinite
 						-webkit-animation: dismiss-animation 1.5s steps(5, start) infinite
+						
+						span
+							padding-right: 3px
 					
 					@keyframes dismiss-animation 
 						0% 
@@ -459,7 +462,7 @@ body
 							
 							label
 								font-size: 3.75vw
-								margin-left: 15px	
+								margin-left: 1vw	
 							
 						.label
 							grid-row: 3
@@ -492,6 +495,12 @@ body
 						
 						span
 							line-height: 1.4
+							
+						
+						span.fa-trash
+							padding-left: 7.5px
+							padding-right: 7.5px
+							transform: translateX(-7.5px)
 						
 						span:active
 							position: relative
@@ -500,6 +509,9 @@ body
 						.dismiss
 							animation: dismiss-animation 1.5s steps(5, start) infinite
 							-webkit-animation: dismiss-animation 1.5s steps(5, start) infinite
+							
+							span
+								padding-right: 3px
 						
 						@keyframes dismiss-animation 
 							0% 
@@ -693,7 +705,7 @@ body
 									font-size: 150%
 										
 								span
-									font-size: 4.5vw
+									font-size: 4.75vw
 									
 						.collapse-div
 							span
@@ -800,6 +812,8 @@ body
 				height: 180vh
 				
 				li.alarm
+					height: 36vw
+					
 					.expanded-grid
 						.collapsing
 							.repeat, .vibrate
@@ -809,7 +823,8 @@ body
 						
 						.collapse-div
 							margin: 3.25% 6% 0
-							line-height: 2.2
+							line-height: 2.3
+							font-size: 3vw
 							
 						.click
 							line-height: 1.5
@@ -820,7 +835,20 @@ body
 				
 				&:active
 					margin-top: 82vh	
+				
+			#alarm-ul	
+				li.fold
+					height: auto
 					
+	@media (max-width: 800px)
+		body
+			#alarm-clock-container
+				#alarm-ul
+					li.alarm
+						.expanded-grid
+							.collapse-div
+								line-height: 2.5
+								
 @media (min-width: 500px) and (orientation: portrait)
 	body
 		#alarm-clock-container

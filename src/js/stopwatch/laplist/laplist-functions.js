@@ -45,13 +45,8 @@ export const calcAddLap = (prevTime, curr) => {
 };
 
 export const trackSvgScaling = () => {
-	const layout = window.screen.orientation.type === "landscape-primary";
-	return document.body.clientWidth > 700 ? 
-			{ 
-				transform: `scale(${ document.body.clientWidth / 700 })`, 
-				top: !layout ? '5vw' : '2.5vw', 
-				left: !layout ? '-3vw': '-1.5vw' 
-			} 
-		: 
+	return document.body.clientWidth > 700 ?
+			{ transform: `scale(${ document.body.clientWidth / 700 })` } 
+		:
 			null;
 };

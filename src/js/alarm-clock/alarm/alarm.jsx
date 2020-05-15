@@ -33,14 +33,12 @@ export default class Alarm extends React.PureComponent {
 	}
 	
 	powerChange(e){ 
-		//e.persist(); 
 		if(this.props.alarmObj['power'] !== e.target.value){
 			this.props.powerChangeState(this.props.i, e.target.value); 
 		}
 	}
 	
 	labelKeyUp(e){
-		//e.persist()
 		if(e.keyCode === 13){
 			return this.labelValue.length ? 
 					this.newLabel(e) 
@@ -210,6 +208,7 @@ export default class Alarm extends React.PureComponent {
 										   type="text" 
 										   name="label"
 										   onKeyUp={ (e) => this.labelKeyUp(e) }
+										   autoComplete="off"
 									/>
 								</div>
 							</div> 

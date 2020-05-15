@@ -331,8 +331,8 @@ export default class AppStopWatch extends React.PureComponent {
 								 height="65"
 								 style={ trackSvgScaling() }
 								 onMouseUp={ () => this.addCurrentLap() }>
-								<line x1="13"
-									  x2="29" 
+								<line x1="15"//"13"
+									  x2="31"//"29" 
 									  y1="5" 
 									  y2="26.5" 
 									  stroke="#ffffff" 
@@ -342,7 +342,7 @@ export default class AppStopWatch extends React.PureComponent {
 										fill="transparent" 
 										stroke="#ffffff" 
 										strokeWidth="4"
-										cx="33.5"
+										cx="35.5"//"33.5"
 										cy="33.5"	
 								/>
 							</svg>

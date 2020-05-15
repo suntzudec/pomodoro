@@ -40,7 +40,7 @@ class AppClock extends React.PureComponent {
 		window.clearInterval(this.mainInterval);
 	}
 	
-	parseMaintenanceObj(){ 						console.log("parseMaint")
+	parseMaintenanceObj(){ 						
 		let upperLimit = 0;
 		let lowerLimit = 0;
 		const selected = this.props.selected;	
@@ -59,7 +59,6 @@ class AppClock extends React.PureComponent {
 		this.props.update("listing");
 		
 		if(this.props.listing === true && this.props.selected){ 
-		console.log("parse if")
 			this.parseMaintenanceObj();
 			this.frozenSelected = this.sortedCopy(this.props.selected);
 			this.prevSelected = this.frozenSelected.length - 1; 

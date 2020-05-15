@@ -1,6 +1,7 @@
 const setAlarmButtonStyle = (setAlarm) => {
-	const landscape = window.screen.orientation.type.startsWith("landscape");
+	//const landscape = window.screen.orientation.type.startsWith("landscape");
 	const { clientWidth } = document.body;
+	const landscape = clientWidth > document.body.clientHeight;
 	
 	if(setAlarm === true){
 		if(clientWidth < 1050 && !landscape){

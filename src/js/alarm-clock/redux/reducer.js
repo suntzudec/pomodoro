@@ -34,7 +34,7 @@ const alarmClockReducer = (state = State['alarm-clock'], action) => {
 			
 			break; 
 		
-		case types.SNOOZE:	console.log("SNOOZE")
+		case types.SNOOZE:	
 			state['alarm-list'][action.index]['snooze'] = +(Date.now() / 1000).toFixed(0);
 			state['alarm-list'][action.index]['ringing'] = false; 
 			

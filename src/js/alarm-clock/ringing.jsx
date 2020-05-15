@@ -18,27 +18,6 @@ export default class Ringing extends React.PureComponent {
 	
 	componentDidUpdate(){	
 		this.volumeIncreaseHandler();	
-		
-		/* const notNull = this.props.alarmListIndexChanged !== null; //perhaps remove below...
-		const notAlarmPath = window.location.hash !== "#/alarm-clock";
-		
-		if(notNull && notAlarmPath){
-			let item;
-			
-			if(typeof this.props.alarmListIndexChanged === "number"){
-				item = this.props.alarmList[this.props.alarmListIndexChanged];
-			}
-			else {
-				item = this.props.alarmListIndexChanged;
-			}
-			console.log(item, "CROSSED IN RINGING")
-			alarmWorker.postMessage(
-				 JSON.stringify(
-					item
-				)
-			); 
-		}  */
-		
 	}
 	
 	componentWillUnmount(){ 
@@ -46,8 +25,8 @@ export default class Ringing extends React.PureComponent {
 		
 		if(this.type === true){
 			this.postMessage({
-					"RINGING_ENDED": this.props.alarmList[this.props.isRinging]
-				});
+				"RINGING_ENDED": this.props.alarmList[this.props.isRinging]
+			});
 		}
 		else if(window.location.hash !== "#/alarm-clock"){
 			this.postMessage(
