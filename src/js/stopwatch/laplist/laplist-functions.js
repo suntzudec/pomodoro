@@ -45,8 +45,10 @@ export const calcAddLap = (prevTime, curr) => {
 };
 
 export const trackSvgScaling = () => {
-	return document.body.clientWidth > 700 ?
-			{ transform: `scale(${ document.body.clientWidth / 700 })` } 
+	const { clientWidth } = document.body;
+	
+	return clientWidth > 700 ?
+			{ transform: `scale(${ clientWidth / 700 })` } 
 		:
 			null;
 };
