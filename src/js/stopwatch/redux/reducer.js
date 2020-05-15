@@ -15,7 +15,7 @@ const stopWatchReducer = (state = State['stopwatch'], action) => {
 			break;
 
 		case types.ADD_TO_LIST: 
-			state['lap-list'] = [ action.lapArr, ...state['lap-list'] ];// [ ...state['lap-list'], action.lapArr  ];
+			state['lap-list'] = [ action.lapArr, ...state['lap-list'] ]; 
 			break;
 		
 		case types.SET_TIME:
