@@ -71,11 +71,11 @@ export function minuteXCorrect(val){
 	return val - 16;
 }
 
-export function createUnit(direct, diff){ 												
+export function createUnit(direct, diff){ 	
 	return direct * (diff - (diff / 4)) / 4;
 }
 
-export function correctHourCycle(bool, hour){ 												
+export function correctHourCycle(bool, hour){ 
 	if(bool === true){
 		if(hour === 12){
 			return 1;
@@ -95,5 +95,4 @@ export function toMinConditionValue(count){
 		return -1;
 	}
 	return 1;
-}
-	
+}	

@@ -96,8 +96,15 @@ export default class SetAlarm extends React.PureComponent {
 	
 	setCurrentCoords(){
 		this.currentCoords = [ 											
-			selectCircleAdjustX(plotPoints[this.index][0], this.index, this.props.setAlarm['toMin']),
-			selectCircleAdjustY(plotPoints[this.index][1], this.index)
+			selectCircleAdjustX(
+				plotPoints[this.index][0], 
+				this.index, 
+				this.props.setAlarm['toMin']
+			),
+			selectCircleAdjustY(
+				plotPoints[this.index][1], 
+				this.index
+			)
 		];
 		
 		this.setHourMin();
@@ -297,7 +304,10 @@ export default class SetAlarm extends React.PureComponent {
 			selected.classList.add("red");
 			const other = tuple.filter(item => item !== id)[0];
 			this.byId(other).classList.remove("red");
-			this.currentClock = id === tuple[0] ? hours : minutes;		
+			this.currentClock = id === tuple[0] ? 
+					hours 
+				: 
+					minutes;		
 					
 			const stateChunk = this.props.setAlarm['currentAlarm'][tuple.indexOf(id)];	
 			this.setClockHand(stateChunk);
@@ -462,7 +472,7 @@ export default class SetAlarm extends React.PureComponent {
 						&#8626;
 					</text>	
 					<line id="clock-line"
-						  x1="348" 
+						  x1="348"     
 						  y1="365"
 						  x2={ this.currentCoords[0] } 
 						  y2={ this.currentCoords[1] }
